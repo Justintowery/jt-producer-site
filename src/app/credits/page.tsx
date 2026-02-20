@@ -4,15 +4,6 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { credits } from "@/data/credits";
 
-/**
- * Cinematic editorial credits index:
- * Columns (ONLY): Product, Director, Company, Location
- * - No search
- * - No heavy card chrome
- * - Subtle dividers + hover
- * - Responsive: table-like on desktop, labeled stack on mobile
- */
-
 type AnyCredit = Record<string, unknown>;
 
 function pickString(c: AnyCredit, keys: string[]): string | null {
@@ -39,7 +30,7 @@ export default function CreditsPage() {
             Credits
           </p>
 
-          <div className="mt-4 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+          <div className="mt-4 flex items-end justify-between">
             <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">
               Selected credits.
             </h1>
@@ -51,10 +42,6 @@ export default function CreditsPage() {
               Back home
             </Link>
           </div>
-
-          <p className="mt-5 max-w-3xl text-base leading-relaxed text-zinc-300 sm:text-lg">
-            A focused index of work — built for speed, clarity, and taste.
-          </p>
         </motion.div>
 
         {/* Table */}
@@ -64,24 +51,27 @@ export default function CreditsPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.55, ease: "easeOut", delay: 0.05 }}
         >
-          {/* Desktop column headers */}
+          {/* Column headers */}
           <div className="hidden sm:grid sm:grid-cols-12 sm:gap-6 border-b border-white/10 pb-3">
-            <div className="sm:col-span-5">
+            <div className="sm:col-span-4">
               <div className="text-[11px] uppercase tracking-[0.35em] text-zinc-500">
-                Product
+                Client
               </div>
             </div>
+
             <div className="sm:col-span-3">
               <div className="text-[11px] uppercase tracking-[0.35em] text-zinc-500">
                 Director
               </div>
             </div>
+
             <div className="sm:col-span-3">
               <div className="text-[11px] uppercase tracking-[0.35em] text-zinc-500">
                 Company
               </div>
             </div>
-            <div className="sm:col-span-1 sm:text-right">
+
+            <div className="sm:col-span-2 text-right">
               <div className="text-[11px] uppercase tracking-[0.35em] text-zinc-500">
                 Location
               </div>
@@ -91,10 +81,8 @@ export default function CreditsPage() {
           {/* Rows */}
           <div className="divide-y divide-white/10">
             {items.map((c, idx) => {
-              // Prefer your existing schema, but be resilient:
-              const product =
-                pickString(c, ["product", "title", "client", "brand", "name"]) ??
-                "—";
+              const client =
+                pickString(c, ["client", "brand", "title", "name"]) ?? "—";
 
               const director =
                 pickString(c, ["director", "dir"]) ?? "—";
@@ -103,84 +91,73 @@ export default function CreditsPage() {
                 pickString(c, [
                   "company",
                   "prodco",
-                  "prodCo",
                   "productionCompany",
                   "production_company",
-                  "productionCo",
-                  "production_co",
-                  "prodCompany",
-                  "prod_company",
                 ]) ?? "—";
 
               const location =
-                pickString(c, ["location", "city", "market", "state", "where"]) ??
-                "—";
+                pickString(c, ["location", "city", "market", "state"]) ?? "—";
 
               return (
                 <div
-                  key={`${product}-${director}-${idx}`}
-                  className="group py-5 transition sm:py-6"
+                  key={`${client}-${director}-${idx}`}
+                  className="group py-6 transition"
                 >
-                  {/* Desktop row */}
-                  <div className="hidden sm:grid sm:grid-cols-12 sm:gap-6">
-                    <div className="sm:col-span-5">
-                      <div className="text-lg font-medium tracking-tight text-white/95 transition group-hover:text-white">
-                        {product}
+                  {/* Desktop layout */}
+                  <div className="hidden sm:grid sm:grid-cols-12 sm:gap-6 items-start">
+                    <div className="sm:col-span-4">
+                      <div className="text-lg font-medium tracking-tight text-white/95 group-hover:text-white">
+                        {client}
                       </div>
                     </div>
 
                     <div className="sm:col-span-3">
-                      <div className="text-base text-zinc-300 transition group-hover:text-zinc-200">
+                      <div className="text-base text-zinc-300 group-hover:text-zinc-200">
                         {director}
                       </div>
                     </div>
 
                     <div className="sm:col-span-3">
-                      <div className="text-base text-zinc-300 transition group-hover:text-zinc-200">
+                      <div className="text-base text-zinc-300 group-hover:text-zinc-200">
                         {company}
                       </div>
                     </div>
 
-                    <div className="sm:col-span-1 sm:text-right">
-                      <div className="text-base text-zinc-400 transition group-hover:text-zinc-300">
+                    <div className="sm:col-span-2 text-right">
+                      <div className="text-base text-zinc-400 whitespace-nowrap group-hover:text-zinc-300">
                         {location}
                       </div>
                     </div>
                   </div>
 
-                  {/* Mobile row (labeled stack) */}
+                  {/* Mobile layout */}
                   <div className="sm:hidden">
                     <div className="text-lg font-medium tracking-tight text-white/95">
-                      {product}
+                      {client}
                     </div>
 
-                    <div className="mt-3 grid grid-cols-1 gap-2 text-sm">
-                      <div className="flex items-baseline justify-between gap-4">
-                        <span className="text-[11px] uppercase tracking-[0.32em] text-zinc-500">
+                    <div className="mt-3 grid gap-2 text-sm">
+                      <div className="flex justify-between">
+                        <span className="text-zinc-500 uppercase tracking-[0.32em] text-[11px]">
                           Director
                         </span>
                         <span className="text-zinc-200">{director}</span>
                       </div>
 
-                      <div className="flex items-baseline justify-between gap-4">
-                        <span className="text-[11px] uppercase tracking-[0.32em] text-zinc-500">
+                      <div className="flex justify-between">
+                        <span className="text-zinc-500 uppercase tracking-[0.32em] text-[11px]">
                           Company
                         </span>
                         <span className="text-zinc-200">{company}</span>
                       </div>
 
-                      <div className="flex items-baseline justify-between gap-4">
-                        <span className="text-[11px] uppercase tracking-[0.32em] text-zinc-500">
+                      <div className="flex justify-between">
+                        <span className="text-zinc-500 uppercase tracking-[0.32em] text-[11px]">
                           Location
                         </span>
                         <span className="text-zinc-300">{location}</span>
                       </div>
                     </div>
-                  </div>
-
-                  {/* Subtle hover wash (desktop only, keeps it cinematic) */}
-                  <div className="pointer-events-none hidden sm:block">
-                    <div className="mt-0.5 h-0 w-full transition duration-300 group-hover:h-0" />
                   </div>
                 </div>
               );
@@ -204,19 +181,6 @@ export default function CreditsPage() {
           </div>
         </motion.div>
       </section>
-
-      {/* Row hover background (very subtle) */}
-      <style jsx global>{`
-        /* Keeps the interaction minimal, not “app-y” */
-        .group:hover {
-          background: linear-gradient(
-            90deg,
-            rgba(255, 255, 255, 0.03),
-            rgba(255, 255, 255, 0.01),
-            rgba(255, 255, 255, 0)
-          );
-        }
-      `}</style>
     </main>
   );
 }
