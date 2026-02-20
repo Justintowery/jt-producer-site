@@ -40,6 +40,27 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+        <head>
+  <script
+    type="application/ld+json"
+    dangerouslySetInnerHTML={{
+      __html: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "Person",
+        name: "Justin Towery",
+        url: "https://justintowery.com",
+        sameAs: [
+          "https://www.imdb.com/name/YOUR-ID/",
+          "https://www.instagram.com/justintowery/",
+          "https://www.linkedin.com/in/justintowery/",
+          "https://www.threads.net/@justintowery",
+          "https://www.facebook.com/therealJT"
+        ],
+        jobTitle: "Producer"
+      })
+    }}
+  />
+</head>
       <body>
         {/* Google Analytics (GA4) */}
         <Script
