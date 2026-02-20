@@ -26,15 +26,15 @@ export default function CreditsPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: "easeOut" }}
         >
+          {/* Keep the small label you like */}
           <p className="text-xs uppercase tracking-[0.35em] text-zinc-400">
             Credits
           </p>
 
-          <div className="mt-4 flex items-end justify-between">
-            <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">
-              Selected credits.
-            </h1>
+          {/* Keep an H1 for SEO, but hide it visually */}
+          <h1 className="sr-only">Credits</h1>
 
+          <div className="mt-6 flex justify-end">
             <Link
               href="/"
               className="inline-flex items-center justify-center rounded-xl border border-white/15 bg-white/0 px-4 py-2 text-sm text-zinc-200 transition hover:border-white/25 hover:bg-white/5"
@@ -46,7 +46,7 @@ export default function CreditsPage() {
 
         {/* Table */}
         <motion.div
-          className="mt-12"
+          className="mt-10"
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.55, ease: "easeOut", delay: 0.05 }}
@@ -81,11 +81,12 @@ export default function CreditsPage() {
           {/* Rows */}
           <div className="divide-y divide-white/10">
             {items.map((c, idx) => {
+              // IMPORTANT: your data likely stores this as "product"
               const client =
-                pickString(c, ["client", "brand", "title", "name"]) ?? "—";
+                pickString(c, ["client", "brand", "product", "title", "name"]) ??
+                "—";
 
-              const director =
-                pickString(c, ["director", "dir"]) ?? "—";
+              const director = pickString(c, ["director", "dir"]) ?? "—";
 
               const company =
                 pickString(c, [
@@ -137,25 +138,31 @@ export default function CreditsPage() {
                     </div>
 
                     <div className="mt-3 grid gap-2 text-sm">
-                      <div className="flex justify-between">
+                      <div className="flex justify-between gap-4">
                         <span className="text-zinc-500 uppercase tracking-[0.32em] text-[11px]">
                           Director
                         </span>
-                        <span className="text-zinc-200">{director}</span>
+                        <span className="text-zinc-200 text-right">
+                          {director}
+                        </span>
                       </div>
 
-                      <div className="flex justify-between">
+                      <div className="flex justify-between gap-4">
                         <span className="text-zinc-500 uppercase tracking-[0.32em] text-[11px]">
                           Company
                         </span>
-                        <span className="text-zinc-200">{company}</span>
+                        <span className="text-zinc-200 text-right">
+                          {company}
+                        </span>
                       </div>
 
-                      <div className="flex justify-between">
+                      <div className="flex justify-between gap-4">
                         <span className="text-zinc-500 uppercase tracking-[0.32em] text-[11px]">
                           Location
                         </span>
-                        <span className="text-zinc-300">{location}</span>
+                        <span className="text-zinc-300 text-right">
+                          {location}
+                        </span>
                       </div>
                     </div>
                   </div>
