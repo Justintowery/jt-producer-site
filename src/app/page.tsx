@@ -107,22 +107,28 @@ export default function HomePage() {
       {/* BELOW THE FOLD */}
       <section className="mx-auto max-w-6xl px-6 py-20">
         <div className="grid gap-10 md:grid-cols-3">
-          <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
-            <h2 className="text-lg font-semibold text-white">What I do</h2>
-            <p className="mt-3 text-sm leading-relaxed text-zinc-300">
-              Line Producer / Hybrid Producer — budgets, bidding, crews, schedules, travel,
-              locations, logistics, and calm execution from prep through wrap.
-            </p>
+          {/* ABOUT (replaces What I do / How I work) */}
+          <div className="md:col-span-2 rounded-2xl border border-white/10 bg-white/5 p-6">
+            <h2 className="text-lg font-semibold text-white">About</h2>
+
+            <div className="mt-4 space-y-4 text-sm leading-relaxed text-zinc-300">
+              <p>
+                I’ve spent two decades producing commercial work at scale — leading teams,
+                managing complexity, and protecting creative at the highest level.
+              </p>
+
+              <p>
+                I’ve worked in high-pressure environments long enough to know that preparation
+                wins — and calm leadership sets the tone for everyone else.
+              </p>
+
+              <p className="text-zinc-200/90">Built in Los Angeles. Working nationally.</p>
+
+              <p className="text-zinc-200/90">Calm isn’t a personality trait. It’s a strategy.</p>
+            </div>
           </div>
 
-          <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
-            <h2 className="text-lg font-semibold text-white">How I work</h2>
-            <p className="mt-3 text-sm leading-relaxed text-zinc-300">
-              Clear communication, smart problem solving, crew-first leadership, and a steady set
-              environment that supports the work.
-            </p>
-          </div>
-
+          {/* NEXT (kept) */}
           <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
             <h2 className="text-lg font-semibold text-white">Next</h2>
             <p className="mt-3 text-sm leading-relaxed text-zinc-300">
