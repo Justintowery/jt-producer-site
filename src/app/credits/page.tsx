@@ -1,116 +1,159 @@
 "use client";
 
-import Link from "next/link";
-import { motion } from "framer-motion";
+import { useMemo, useState } from "react";
 import { credits } from "@/data/credits";
 
 type Credit = {
-  title: string;
-  role?: string;
-  client?: string;
-  director?: string;
-  prodco?: string;
-  year?: string;
+  product: string;
+  director: string;
+  company: string;
+  location: string;
 };
 
 export default function CreditsPage() {
-  const items = (credits as unknown as Credit[]) ?? [];
+  const [query, setQuery] = useState("");
+
+  const filtered = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    if (!q) return credits as Credit[];
+
+    return (credits as Credit[]).filter((c) => {
+      const haystack = `${c.product} ${c.director} ${c.company} ${c.location}`.toLowerCase();
+      return haystack.includes(q);
+    });
+  }, [query]);
 
   return (
-    <main className="min-h-dvh bg-zinc-950 text-white">
-      <section className="mx-auto max-w-6xl px-6 pb-20 pt-28 sm:pt-32">
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, ease: "easeOut" }}
-        >
-          <p className="text-xs uppercase tracking-[0.35em] text-zinc-400">
-            Credits
-          </p>
+    <main className="relative mx-auto max-w-6xl px-6 pb-24 pt-28">
+      {/* background polish */}
+      <div className="pointer-events-none absolute inset-0 -z-10">
+        <div className="absolute inset-0 bg-zinc-950" />
+        <div className="absolute left-1/2 top-[-240px] h-[560px] w-[900px] -translate-x-1/2 rounded-full bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.08),transparent_60%)] blur-2xl" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/10 to-black/60" />
+      </div>
 
-          <div className="mt-4 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-            <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">
-              Selected credits.
-            </h1>
+      <div className="opacity-0 animate-[fadeIn_600ms_ease-out_forwards]">
+        <p className="text-xs uppercase tracking-[0.35em] text-zinc-400">Credits</p>
 
-            <Link
-              href="/"
-              className="inline-flex items-center justify-center rounded-xl border border-white/15 bg-white/0 px-4 py-2 text-sm text-zinc-200 transition hover:border-white/25 hover:bg-white/5"
-            >
-              Back home
-            </Link>
-          </div>
+        <div className="mt-6">
+          <input
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Search product, director, company, or location…"
+            className="w-full rounded-2xl border border-white/10 bg-white/5 px-5 py-4 text-[15px] text-white placeholder:text-zinc-500 outline-none transition focus:border-white/20 focus:bg-white/7"
+          />
+        </div>
 
-          <p className="mt-5 max-w-3xl text-base leading-relaxed text-zinc-300 sm:text-lg">
-            A snapshot of work across broadcast, digital, and brand campaigns.
-          </p>
-        </motion.div>
-
-        <motion.div
-          className="mt-10 rounded-3xl border border-white/10 bg-white/5 p-6 shadow-[0_0_0_1px_rgba(255,255,255,0.04)] backdrop-blur sm:p-8"
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.55, ease: "easeOut", delay: 0.05 }}
-        >
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {items.map((c, idx) => (
-              <div
-                key={`${c.title ?? "credit"}-${idx}`}
-                className="rounded-2xl border border-white/10 bg-black/20 p-5"
-              >
-                <div className="text-base font-semibold text-white">
-                  {c.title}
-                </div>
-
-                <div className="mt-2 space-y-1 text-sm text-zinc-300">
-                  {c.client && (
-                    <div>
-                      <span className="text-zinc-400">Client:</span>{" "}
-                      {c.client}
-                    </div>
-                  )}
-                  {c.role && (
-                    <div>
-                      <span className="text-zinc-400">Role:</span> {c.role}
-                    </div>
-                  )}
-                  {c.director && (
-                    <div>
-                      <span className="text-zinc-400">Director:</span>{" "}
-                      {c.director}
-                    </div>
-                  )}
-                  {c.prodco && (
-                    <div>
-                      <span className="text-zinc-400">Prod Co:</span> {c.prodco}
-                    </div>
-                  )}
-                  {c.year && (
-                    <div>
-                      <span className="text-zinc-400">Year:</span> {c.year}
-                    </div>
-                  )}
+        <div className="mt-8 rounded-3xl border border-white/10 bg-white/[0.04] shadow-[0_0_0_1px_rgba(255,255,255,0.03)_inset] overflow-hidden">
+          {/* DESKTOP TABLE */}
+          <div className="hidden md:block">
+            <div className="max-h-[70vh] overflow-auto">
+              {/* sticky header */}
+              <div className="sticky top-0 z-10 border-b border-white/10 bg-zinc-950/70 backdrop-blur">
+                <div className="grid grid-cols-[1.4fr_1fr_1fr_0.9fr] gap-6 px-8 py-4 text-[11px] uppercase tracking-[0.35em] text-zinc-400">
+                  <div>Product</div>
+                  <div>Director</div>
+                  <div>Company</div>
+                  <div className="text-right">Location</div>
                 </div>
               </div>
-            ))}
+
+              <div>
+                {filtered.map((c, i) => (
+                  <div
+                    key={`${c.product}-${c.director}-${i}`}
+                    className="grid grid-cols-[1.4fr_1fr_1fr_0.9fr] gap-6 px-8 py-5 border-b border-white/10 last:border-b-0 opacity-0 animate-[rowIn_420ms_ease-out_forwards]"
+                    style={{ animationDelay: `${Math.min(i * 20, 280)}ms` }}
+                  >
+                    <div className="text-[18px] leading-snug text-white">{c.product}</div>
+                    <div className="text-[18px] leading-snug text-zinc-200">{c.director}</div>
+                    <div className="text-[18px] leading-snug text-zinc-400">{c.company}</div>
+                    <div className="text-right text-[18px] leading-snug text-zinc-400 whitespace-nowrap">
+                      {c.location}
+                    </div>
+                  </div>
+                ))}
+
+                {filtered.length === 0 && (
+                  <div className="px-8 py-10 text-zinc-400">No matches.</div>
+                )}
+              </div>
+            </div>
           </div>
 
-          <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:items-center">
-            <Link
-              href="/work"
-              className="inline-flex items-center justify-center rounded-xl border border-white/15 bg-white/0 px-5 py-3 text-sm font-semibold text-white/90 transition hover:border-white/35 hover:text-white"
-            >
-              View work
-            </Link>
-            <Link
-              href="/contact"
-              className="inline-flex items-center justify-center rounded-xl bg-white px-5 py-3 text-sm font-semibold text-black transition hover:opacity-90"
-            >
-              Contact
-            </Link>
+          {/* MOBILE CARDS */}
+          <div className="md:hidden">
+            <div className="border-b border-white/10 bg-zinc-950/40 px-5 py-4">
+              <div className="text-[11px] uppercase tracking-[0.35em] text-zinc-400">
+                Product • Director • Company • Location
+              </div>
+            </div>
+
+            <div>
+              {filtered.map((c, i) => (
+                <div
+                  key={`${c.product}-${c.director}-${i}`}
+                  className="border-b border-white/10 last:border-b-0 px-5 py-5 opacity-0 animate-[rowIn_420ms_ease-out_forwards]"
+                  style={{ animationDelay: `${Math.min(i * 20, 280)}ms` }}
+                >
+                  <div className="text-[18px] leading-snug text-white">{c.product}</div>
+
+                  <div className="mt-4 grid gap-3">
+                    <div>
+                      <div className="text-[11px] uppercase tracking-[0.35em] text-zinc-500">
+                        Director
+                      </div>
+                      <div className="mt-1 text-[16px] text-zinc-200">{c.director}</div>
+                    </div>
+
+                    <div>
+                      <div className="text-[11px] uppercase tracking-[0.35em] text-zinc-500">
+                        Company
+                      </div>
+                      <div className="mt-1 text-[16px] text-zinc-400">{c.company}</div>
+                    </div>
+
+                    <div>
+                      <div className="text-[11px] uppercase tracking-[0.35em] text-zinc-500">
+                        Location
+                      </div>
+                      <div className="mt-1 text-[16px] text-zinc-400">{c.location}</div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+
+              {filtered.length === 0 && (
+                <div className="px-5 py-10 text-zinc-400">No matches.</div>
+              )}
+            </div>
           </div>
-        </motion.div>
-      </section>
+        </div>
+      </div>
+
+      {/* Animations */}
+      <style jsx global>{`
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+            transform: translateY(10px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        @keyframes rowIn {
+          from {
+            opacity: 0;
+            transform: translateY(8px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+      `}</style>
     </main>
   );
 }
