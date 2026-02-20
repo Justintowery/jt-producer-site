@@ -1,157 +1,220 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import Link from "next/link";
+import { motion } from "framer-motion";
 import { credits } from "@/data/credits";
 
-type Credit = {
-  product: string;
-  director: string;
-  company: string;
-  location: string;
-};
+/**
+ * Cinematic editorial credits index:
+ * Columns (ONLY): Product, Director, Company, Location
+ * - No search
+ * - No heavy card chrome
+ * - Subtle dividers + hover
+ * - Responsive: table-like on desktop, labeled stack on mobile
+ */
+
+type AnyCredit = Record<string, unknown>;
+
+function pickString(c: AnyCredit, keys: string[]): string | null {
+  for (const k of keys) {
+    const v = c[k];
+    if (typeof v === "string" && v.trim().length > 0) return v.trim();
+  }
+  return null;
+}
 
 export default function CreditsPage() {
-  const [query, setQuery] = useState("");
-
-  const filtered = useMemo(() => {
-    const q = query.trim().toLowerCase();
-    if (!q) return credits as Credit[];
-
-    return (credits as Credit[]).filter((c) => {
-      const haystack = `${c.product} ${c.director} ${c.company} ${c.location}`.toLowerCase();
-      return haystack.includes(q);
-    });
-  }, [query]);
+  const items = (credits as unknown as AnyCredit[]) ?? [];
 
   return (
-    <main className="relative mx-auto max-w-6xl px-6 pb-24 pt-28">
-      {/* background polish */}
-      <div className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute inset-0 bg-zinc-950" />
-        <div className="absolute left-1/2 top-[-240px] h-[560px] w-[900px] -translate-x-1/2 rounded-full bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.08),transparent_60%)] blur-2xl" />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/10 to-black/60" />
-      </div>
+    <main className="min-h-dvh bg-zinc-950 text-white">
+      <section className="mx-auto max-w-6xl px-6 pb-24 pt-28 sm:pt-32">
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+        >
+          <p className="text-xs uppercase tracking-[0.35em] text-zinc-400">
+            Credits
+          </p>
 
-      <div className="opacity-0 animate-[fadeIn_600ms_ease-out_forwards]">
-        <p className="text-xs uppercase tracking-[0.35em] text-zinc-400">Credits</p>
+          <div className="mt-4 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+            <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">
+              Selected credits.
+            </h1>
 
-        <div className="mt-6">
-          <input
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search product, director, company, or location…"
-            className="w-full rounded-2xl border border-white/10 bg-white/5 px-5 py-4 text-[15px] text-white placeholder:text-zinc-500 outline-none transition focus:border-white/20 focus:bg-white/7"
-          />
-        </div>
+            <Link
+              href="/"
+              className="inline-flex items-center justify-center rounded-xl border border-white/15 bg-white/0 px-4 py-2 text-sm text-zinc-200 transition hover:border-white/25 hover:bg-white/5"
+            >
+              Back home
+            </Link>
+          </div>
 
-        <div className="mt-8 rounded-3xl border border-white/10 bg-white/[0.04] shadow-[0_0_0_1px_rgba(255,255,255,0.03)_inset] overflow-hidden">
-          {/* DESKTOP TABLE */}
-          <div className="hidden md:block">
-            <div className="max-h-[70vh] overflow-auto">
-              {/* sticky header */}
-              <div className="sticky top-0 z-10 border-b border-white/10 bg-zinc-950/70 backdrop-blur">
-                <div className="grid grid-cols-[1.4fr_1fr_1fr_0.9fr] gap-6 px-8 py-4 text-[11px] uppercase tracking-[0.35em] text-zinc-400">
-                  <div>Product</div>
-                  <div>Director</div>
-                  <div>Company</div>
-                  <div className="text-right">Location</div>
-                </div>
+          <p className="mt-5 max-w-3xl text-base leading-relaxed text-zinc-300 sm:text-lg">
+            A focused index of work — built for speed, clarity, and taste.
+          </p>
+        </motion.div>
+
+        {/* Table */}
+        <motion.div
+          className="mt-12"
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.55, ease: "easeOut", delay: 0.05 }}
+        >
+          {/* Desktop column headers */}
+          <div className="hidden sm:grid sm:grid-cols-12 sm:gap-6 border-b border-white/10 pb-3">
+            <div className="sm:col-span-5">
+              <div className="text-[11px] uppercase tracking-[0.35em] text-zinc-500">
+                Product
               </div>
-
-              <div>
-                {filtered.map((c, i) => (
-                  <div
-                    key={`${c.product}-${c.director}-${i}`}
-                    className="grid grid-cols-[1.4fr_1fr_1fr_0.9fr] gap-6 px-8 py-5 border-b border-white/10 last:border-b-0 opacity-0 animate-[rowIn_420ms_ease-out_forwards]"
-                    style={{ animationDelay: `${Math.min(i * 20, 280)}ms` }}
-                  >
-                    <div className="text-[18px] leading-snug text-white">{c.product}</div>
-                    <div className="text-[18px] leading-snug text-zinc-200">{c.director}</div>
-                    <div className="text-[18px] leading-snug text-zinc-400">{c.company}</div>
-                    <div className="text-right text-[18px] leading-snug text-zinc-400 whitespace-nowrap">
-                      {c.location}
-                    </div>
-                  </div>
-                ))}
-
-                {filtered.length === 0 && (
-                  <div className="px-8 py-10 text-zinc-400">No matches.</div>
-                )}
+            </div>
+            <div className="sm:col-span-3">
+              <div className="text-[11px] uppercase tracking-[0.35em] text-zinc-500">
+                Director
+              </div>
+            </div>
+            <div className="sm:col-span-3">
+              <div className="text-[11px] uppercase tracking-[0.35em] text-zinc-500">
+                Company
+              </div>
+            </div>
+            <div className="sm:col-span-1 sm:text-right">
+              <div className="text-[11px] uppercase tracking-[0.35em] text-zinc-500">
+                Location
               </div>
             </div>
           </div>
 
-          {/* MOBILE CARDS */}
-          <div className="md:hidden">
-            <div className="border-b border-white/10 bg-zinc-950/40 px-5 py-4">
-              <div className="text-[11px] uppercase tracking-[0.35em] text-zinc-400">
-                Product • Director • Company • Location
-              </div>
-            </div>
+          {/* Rows */}
+          <div className="divide-y divide-white/10">
+            {items.map((c, idx) => {
+              // Prefer your existing schema, but be resilient:
+              const product =
+                pickString(c, ["product", "title", "client", "brand", "name"]) ??
+                "—";
 
-            <div>
-              {filtered.map((c, i) => (
+              const director =
+                pickString(c, ["director", "dir"]) ?? "—";
+
+              const company =
+                pickString(c, [
+                  "company",
+                  "prodco",
+                  "prodCo",
+                  "productionCompany",
+                  "production_company",
+                  "productionCo",
+                  "production_co",
+                  "prodCompany",
+                  "prod_company",
+                ]) ?? "—";
+
+              const location =
+                pickString(c, ["location", "city", "market", "state", "where"]) ??
+                "—";
+
+              return (
                 <div
-                  key={`${c.product}-${c.director}-${i}`}
-                  className="border-b border-white/10 last:border-b-0 px-5 py-5 opacity-0 animate-[rowIn_420ms_ease-out_forwards]"
-                  style={{ animationDelay: `${Math.min(i * 20, 280)}ms` }}
+                  key={`${product}-${director}-${idx}`}
+                  className="group py-5 transition sm:py-6"
                 >
-                  <div className="text-[18px] leading-snug text-white">{c.product}</div>
-
-                  <div className="mt-4 grid gap-3">
-                    <div>
-                      <div className="text-[11px] uppercase tracking-[0.35em] text-zinc-500">
-                        Director
+                  {/* Desktop row */}
+                  <div className="hidden sm:grid sm:grid-cols-12 sm:gap-6">
+                    <div className="sm:col-span-5">
+                      <div className="text-lg font-medium tracking-tight text-white/95 transition group-hover:text-white">
+                        {product}
                       </div>
-                      <div className="mt-1 text-[16px] text-zinc-200">{c.director}</div>
                     </div>
 
-                    <div>
-                      <div className="text-[11px] uppercase tracking-[0.35em] text-zinc-500">
-                        Company
+                    <div className="sm:col-span-3">
+                      <div className="text-base text-zinc-300 transition group-hover:text-zinc-200">
+                        {director}
                       </div>
-                      <div className="mt-1 text-[16px] text-zinc-400">{c.company}</div>
                     </div>
 
-                    <div>
-                      <div className="text-[11px] uppercase tracking-[0.35em] text-zinc-500">
-                        Location
+                    <div className="sm:col-span-3">
+                      <div className="text-base text-zinc-300 transition group-hover:text-zinc-200">
+                        {company}
                       </div>
-                      <div className="mt-1 text-[16px] text-zinc-400">{c.location}</div>
+                    </div>
+
+                    <div className="sm:col-span-1 sm:text-right">
+                      <div className="text-base text-zinc-400 transition group-hover:text-zinc-300">
+                        {location}
+                      </div>
                     </div>
                   </div>
+
+                  {/* Mobile row (labeled stack) */}
+                  <div className="sm:hidden">
+                    <div className="text-lg font-medium tracking-tight text-white/95">
+                      {product}
+                    </div>
+
+                    <div className="mt-3 grid grid-cols-1 gap-2 text-sm">
+                      <div className="flex items-baseline justify-between gap-4">
+                        <span className="text-[11px] uppercase tracking-[0.32em] text-zinc-500">
+                          Director
+                        </span>
+                        <span className="text-zinc-200">{director}</span>
+                      </div>
+
+                      <div className="flex items-baseline justify-between gap-4">
+                        <span className="text-[11px] uppercase tracking-[0.32em] text-zinc-500">
+                          Company
+                        </span>
+                        <span className="text-zinc-200">{company}</span>
+                      </div>
+
+                      <div className="flex items-baseline justify-between gap-4">
+                        <span className="text-[11px] uppercase tracking-[0.32em] text-zinc-500">
+                          Location
+                        </span>
+                        <span className="text-zinc-300">{location}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Subtle hover wash (desktop only, keeps it cinematic) */}
+                  <div className="pointer-events-none hidden sm:block">
+                    <div className="mt-0.5 h-0 w-full transition duration-300 group-hover:h-0" />
+                  </div>
                 </div>
-              ))}
-
-              {filtered.length === 0 && (
-                <div className="px-5 py-10 text-zinc-400">No matches.</div>
-              )}
-            </div>
+              );
+            })}
           </div>
-        </div>
-      </div>
 
-      {/* Animations */}
+          {/* Bottom actions */}
+          <div className="mt-12 flex flex-col gap-3 sm:flex-row sm:items-center">
+            <Link
+              href="/work"
+              className="inline-flex items-center justify-center rounded-xl border border-white/15 bg-white/0 px-5 py-3 text-sm font-semibold text-white/90 transition hover:border-white/35 hover:bg-white/5 hover:text-white"
+            >
+              View work
+            </Link>
+            <Link
+              href="/contact"
+              className="inline-flex items-center justify-center rounded-xl bg-white px-5 py-3 text-sm font-semibold text-black transition hover:opacity-90"
+            >
+              Contact
+            </Link>
+          </div>
+        </motion.div>
+      </section>
+
+      {/* Row hover background (very subtle) */}
       <style jsx global>{`
-        @keyframes fadeIn {
-          from {
-            opacity: 0;
-            transform: translateY(10px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-        @keyframes rowIn {
-          from {
-            opacity: 0;
-            transform: translateY(8px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
+        /* Keeps the interaction minimal, not “app-y” */
+        .group:hover {
+          background: linear-gradient(
+            90deg,
+            rgba(255, 255, 255, 0.03),
+            rgba(255, 255, 255, 0.01),
+            rgba(255, 255, 255, 0)
+          );
         }
       `}</style>
     </main>
