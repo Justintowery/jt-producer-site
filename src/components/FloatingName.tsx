@@ -33,21 +33,22 @@ export default function FloatingName() {
           group
           inline-flex items-center
           rounded-2xl
-          px-4 py-2
+          px-5 py-3
           uppercase
           tracking-[0.35em]
           text-[18px] md:text-[22px]
           font-medium
-          text-white/80
-          border border-transparent
+          text-white/85
+          border border-white/10
+          bg-white/[0.02]
           transition-all duration-200 ease-out
           hover:text-white
-          hover:bg-white/10
-          hover:border-white/30
-          hover:-translate-y-[1px]
+          hover:bg-white/20
+          hover:border-white/50
+          hover:scale-[1.04]
           focus-visible:outline-none
           focus-visible:ring-2
-          focus-visible:ring-white/40
+          focus-visible:ring-white/50
           cursor-pointer
         "
         aria-label="Go to home"
@@ -56,7 +57,7 @@ export default function FloatingName() {
           JUSTIN TOWERY
           <span
             className="
-              absolute left-0 -bottom-1 h-px w-full
+              absolute left-0 -bottom-2 h-[2px] w-full
               bg-white
               opacity-0
               transition-opacity duration-200 ease-out
