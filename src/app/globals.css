@@ -43,10 +43,13 @@ body {
   position: relative;
 }
 
-/* IMPORTANT: only the overlay should ignore clicks (NOT the whole section) */
+/* IMPORTANT:
+   Only the grain overlay should ignore clicks.
+   DO NOT disable pointer-events on .film-grain itself,
+   or buttons inside the hero will stop working. */
 .film-grain::before,
 .film-grain::after {
-  pointer-events: none !important;
+  pointer-events: none;
 }
 
 .film-grain::after {
@@ -59,14 +62,14 @@ body {
   background-size: 180px 180px;
 }
 
-/* Safety: if you add other decorative overlays, they should never block clicks */
-.noise::before,
-.noise::after,
-[data-overlay]::before,
-[data-overlay]::after,
-.overlay::before,
-.overlay::after,
+/* Safety: if any full-screen overlay exists, it must not intercept clicks */
+[data-overlay],
+.overlay,
+.vignette,
 .vignette::before,
-.vignette::after {
+.vignette::after,
+.noise,
+.noise::before,
+.noise::after {
   pointer-events: none !important;
 }
