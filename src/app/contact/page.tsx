@@ -10,9 +10,10 @@ export default function ContactPage() {
   const instagramHandle = "@justintowery";
   const instagramUrl = "https://instagram.com/justintowery";
 
+  // ✅ CLEAN MAILTO (no encoded body)
   const mailto = `mailto:${email}?subject=${encodeURIComponent(
     "Production Inquiry"
-  )}&body=${encodeURIComponent("Hi Justin,%0D%0A%0D%0A")}`;
+  )}`;
 
   const smsHref = `sms:${phone.replace(/\./g, "")}`;
 
