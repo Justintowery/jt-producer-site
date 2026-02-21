@@ -7,7 +7,7 @@ import {
   useScroll,
   useTransform,
 } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 export default function HomePage() {
   const reduceMotion = useReducedMotion();
@@ -34,8 +34,80 @@ export default function HomePage() {
     </svg>
   `);
 
-  // Glow state
+  // Work Together card glow state
   const [glow, setGlow] = useState({ x: 50, y: 50 });
+
+  /**
+   * Ultra-subtle magnetic hover for hero buttons
+   * - barely-there translation toward cursor
+   * - preserves clickability (no overlays; pointer events normal)
+   * - respects prefers-reduced-motion (disabled)
+   */
+  type MagnetApi = {
+    ref: React.RefObject<HTMLButtonElement>;
+    onMove: (e: React.MouseEvent<HTMLButtonElement>) => void;
+    onLeave: () => void;
+    style: React.CSSProperties;
+  };
+
+  const useMagnet = (strength = 0.06): MagnetApi => {
+    const ref = useRef<HTMLButtonElement>(null);
+    const reduce = reduceMotion;
+
+    const [pos, setPos] = useState({ x: 0, y: 0 });
+    const raf = useRef<number | null>(null);
+
+    const setPosRaf = (next: { x: number; y: number }) => {
+      if (raf.current) cancelAnimationFrame(raf.current);
+      raf.current = requestAnimationFrame(() => setPos(next));
+    };
+
+    useEffect(() => {
+      return () => {
+        if (raf.current) cancelAnimationFrame(raf.current);
+      };
+    }, []);
+
+    const onMove = (e: React.MouseEvent<HTMLButtonElement>) => {
+      if (reduce) return;
+      const el = ref.current;
+      if (!el) return;
+
+      const rect = el.getBoundingClientRect();
+      const px = (e.clientX - rect.left) / rect.width; // 0..1
+      const py = (e.clientY - rect.top) / rect.height; // 0..1
+
+      // center to -0.5..0.5 then scale to pixels
+      const dx = (px - 0.5) * rect.width * strength;
+      const dy = (py - 0.5) * rect.height * strength;
+
+      setPosRaf({ x: dx, y: dy });
+    };
+
+    const onLeave = () => {
+      if (reduce) return;
+      setPosRaf({ x: 0, y: 0 });
+    };
+
+    const style: React.CSSProperties = reduce
+      ? {}
+      : {
+          transform: `translate3d(${pos.x}px, ${pos.y}px, 0)`,
+          transition: "transform 180ms cubic-bezier(0.2, 0.8, 0.2, 1)",
+          willChange: "transform",
+        };
+
+    return { ref, onMove, onLeave, style };
+  };
+
+  const magnetPrimary = useMagnet(0.055);
+  const magnetSecondary = useMagnet(0.05);
+  const magnetTertiary = useMagnet(0.05);
+
+  // Optional: add a super faint “lift” shadow when hovering hero buttons
+  const heroBtnBase =
+    "rounded-2xl px-7 py-4 text-sm font-semibold transition will-change-transform";
+  const heroBtnLift = reduceMotion ? "" : "hover:-translate-y-[1px]";
 
   return (
     <main className="bg-black text-white">
@@ -119,7 +191,8 @@ export default function HomePage() {
               transition={{ duration: 0.65, delay: 0.18 }}
               className="mt-8 text-base leading-relaxed text-zinc-200/80"
             >
-              I produce commercials — from high-profile celebrity and athlete–driven broadcast campaigns to emerging brands ready to level up.
+              I produce commercials — from high-profile celebrity and athlete–driven
+              broadcast campaigns to emerging brands ready to level up.
             </motion.p>
 
             <motion.div
@@ -129,22 +202,37 @@ export default function HomePage() {
               className="mt-10 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4"
             >
               <button
+                ref={magnetPrimary.ref}
+                onMouseMove={magnetPrimary.onMove}
+                onMouseLeave={magnetPrimary.onLeave}
+                style={magnetPrimary.style}
                 onClick={() => go("/work")}
-                className="rounded-2xl bg-white px-7 py-4 text-sm font-semibold text-black transition hover:-translate-y-[1px]"
+                className={`${heroBtnBase} ${heroBtnLift} bg-white text-black`}
+                aria-label="View work"
               >
                 View work
               </button>
 
               <button
+                ref={magnetSecondary.ref}
+                onMouseMove={magnetSecondary.onMove}
+                onMouseLeave={magnetSecondary.onLeave}
+                style={magnetSecondary.style}
                 onClick={() => go("/credits")}
-                className="rounded-2xl border border-white/25 px-7 py-4 text-sm font-semibold text-white/90 transition hover:border-white/45 hover:text-white"
+                className={`${heroBtnBase} ${heroBtnLift} border border-white/25 text-white/90 hover:border-white/45 hover:text-white`}
+                aria-label="Credits"
               >
                 Credits
               </button>
 
               <button
+                ref={magnetTertiary.ref}
+                onMouseMove={magnetTertiary.onMove}
+                onMouseLeave={magnetTertiary.onLeave}
+                style={magnetTertiary.style}
                 onClick={() => go("/contact")}
-                className="rounded-2xl border border-white/25 px-7 py-4 text-sm font-semibold text-white/90 transition hover:border-white/45 hover:text-white"
+                className={`${heroBtnBase} ${heroBtnLift} border border-white/25 text-white/90 hover:border-white/45 hover:text-white`}
+                aria-label="Contact"
               >
                 Contact
               </button>
@@ -161,10 +249,20 @@ export default function HomePage() {
           <div className="md:col-span-2 rounded-2xl border border-white/[0.08] bg-white/[0.03] p-6 backdrop-blur-sm">
             <h2 className="text-lg font-semibold text-white">About</h2>
             <div className="mt-4 space-y-4 text-sm leading-relaxed text-zinc-300">
-              <p>I’ve spent two decades producing commercial work at scale — leading teams, managing complexity, and protecting creative at the highest level.</p>
-              <p>I’ve worked in high-pressure environments long enough to know that preparation wins — and calm leadership sets the tone for everyone else.</p>
+              <p>
+                I’ve spent two decades producing commercial work at scale — leading
+                teams, managing complexity, and protecting creative at the highest
+                level.
+              </p>
+              <p>
+                I’ve worked in high-pressure environments long enough to know that
+                preparation wins — and calm leadership sets the tone for everyone
+                else.
+              </p>
               <p className="text-zinc-200/85">Built in Los Angeles. Working nationally.</p>
-              <p className="text-zinc-200/85">Calm isn’t a personality trait. It’s a strategy.</p>
+              <p className="text-zinc-200/85">
+                Calm isn’t a personality trait. It’s a strategy.
+              </p>
             </div>
           </div>
 
