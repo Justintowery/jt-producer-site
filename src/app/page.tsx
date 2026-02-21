@@ -21,7 +21,6 @@ export default function HomePage() {
           animate={heroPhotoAnimate}
           transition={heroPhotoTransition}
         >
-          {/* Background image (mobile) */}
           <Image
             src="/hero-mobile.jpg"
             alt="Justin Towery on set"
@@ -29,8 +28,6 @@ export default function HomePage() {
             priority
             className="object-cover object-top md:hidden"
           />
-
-          {/* Background image (desktop) */}
           <Image
             src="/hero.jpg"
             alt="Justin Towery on set"
@@ -82,8 +79,8 @@ export default function HomePage() {
               transition={{ duration: 0.65, ease: "easeOut", delay: 0.18 }}
               className="mt-8 text-base leading-relaxed text-zinc-200/85 sm:text-lg"
             >
-              I produce commercials — from high-profile celebrity and athlete–driven broadcast
-              campaigns to emerging brands ready to level up.
+              I produce commercials — from high-profile celebrity and athlete–driven broadcast campaigns
+              to emerging brands ready to level up.
             </motion.p>
 
             <motion.div
@@ -120,33 +117,27 @@ export default function HomePage() {
       {/* BELOW THE FOLD */}
       <section className="mx-auto max-w-6xl px-6 py-20">
         <div className="grid gap-10 md:grid-cols-3">
-          {/* ABOUT */}
           <div className="md:col-span-2 rounded-2xl border border-white/10 bg-white/5 p-6">
             <h2 className="text-lg font-semibold text-white">About</h2>
-
             <div className="mt-4 space-y-4 text-sm leading-relaxed text-zinc-300">
               <p>
-                I’ve spent two decades producing commercial work at scale — leading teams,
-                managing complexity, and protecting creative at the highest level.
+                I’ve spent two decades producing commercial work at scale — leading teams, managing complexity,
+                and protecting creative at the highest level.
               </p>
-
               <p>
-                I’ve worked in high-pressure environments long enough to know that preparation
-                wins — and calm leadership sets the tone for everyone else.
+                I’ve worked in high-pressure environments long enough to know that preparation wins — and calm
+                leadership sets the tone for everyone else.
               </p>
-
               <p className="text-zinc-200/90">Built in Los Angeles. Working nationally.</p>
               <p className="text-zinc-200/90">Calm isn’t a personality trait. It’s a strategy.</p>
             </div>
           </div>
 
-          {/* NEXT */}
           <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
             <h2 className="text-lg font-semibold text-white">Next</h2>
             <p className="mt-3 text-sm leading-relaxed text-zinc-300">
               Browse credits or reach out for availability. I’ll get back quickly.
             </p>
-
             <div className="mt-5 flex flex-col gap-3">
               <Link
                 href="/credits"
@@ -154,7 +145,6 @@ export default function HomePage() {
               >
                 View credits
               </Link>
-
               <Link
                 href="/contact"
                 className="rounded-xl bg-white px-5 py-3 text-center text-sm font-semibold text-black transition hover:opacity-90"
@@ -165,6 +155,11 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* DEPLOY TEST LABEL (temporary) */}
+      <div className="fixed bottom-3 right-3 z-[9999] rounded-lg bg-white/10 px-3 py-1 text-xs text-white backdrop-blur">
+        DEPLOY TEST: 2026-02-20 A
+      </div>
     </main>
   );
 }
