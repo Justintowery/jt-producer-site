@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
 
 export default function HomePage() {
   // Cinematic hero photo motion
@@ -9,18 +9,12 @@ export default function HomePage() {
   const heroPhotoAnimate = { scale: 1.0, y: -8, opacity: 1 };
   const heroPhotoTransition = { duration: 1.6, ease: "easeOut" as const };
 
-  // Fade floating name out on scroll
-  const { scrollYProgress } = useScroll();
-  const nameOpacity = useTransform(scrollYProgress, [0, 0.15], [1, 0]);
-
   const go = (path: string) => {
     window.location.href = path;
   };
 
   return (
     <main>
-      {/* FLOATING NAME (Home Button) */}
-      
       {/* HERO */}
       <section className="relative min-h-[92vh] w-full overflow-hidden isolate">
         {/* Background image (animated) */}
@@ -88,8 +82,8 @@ export default function HomePage() {
               transition={{ duration: 0.65, ease: "easeOut", delay: 0.18 }}
               className="mt-8 text-base leading-relaxed text-zinc-200/85 sm:text-lg"
             >
-              I produce commercials — from high-profile celebrity and athlete–driven broadcast campaigns
-              to emerging brands ready to level up.
+              I produce commercials — from high-profile celebrity and athlete–driven broadcast campaigns to
+              emerging brands ready to level up.
             </motion.p>
 
             <motion.div
@@ -146,19 +140,13 @@ export default function HomePage() {
           </div>
 
           <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
-            <h2 className="text-lg font-semibold text-white">Next</h2>
+            <h2 className="text-lg font-semibold text-white">Work together</h2>
             <p className="mt-3 text-sm leading-relaxed text-zinc-300">
-              Browse credits or reach out for availability. I’ll get back quickly.
+              If you’re building something ambitious and need calm leadership behind it, reach out. I’ll get back
+              quickly.
             </p>
 
             <div className="mt-5 flex flex-col gap-3">
-              <a
-                href="/credits"
-                className="rounded-xl border border-white/15 bg-white/0 px-5 py-3 text-center text-sm font-semibold text-white/90 transition hover:border-white/35 hover:text-white"
-              >
-                View credits
-              </a>
-
               <a
                 href="/contact"
                 className="rounded-xl bg-white px-5 py-3 text-center text-sm font-semibold text-black transition hover:opacity-90"
