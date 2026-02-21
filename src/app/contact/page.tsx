@@ -6,6 +6,14 @@ import { motion, useReducedMotion } from "framer-motion";
 export default function ContactPage() {
   const reduceMotion = useReducedMotion();
 
+  // Single source of truth for your email
+  const email = "jtowery@mac.com";
+
+  // Optional: pre-fill subject/body when someone clicks the email button
+  const mailto = `mailto:${email}?subject=${encodeURIComponent(
+    "Production Inquiry"
+  )}&body=${encodeURIComponent("Hi Justin,%0D%0A%0D%0A")}`;
+
   return (
     <main className="min-h-screen bg-black text-white">
       <section className="mx-auto max-w-3xl px-6 pb-24 pt-24">
@@ -38,16 +46,13 @@ export default function ContactPage() {
 
         <div className="mt-10 rounded-2xl border border-white/10 bg-white/5 p-6">
           <h2 className="text-lg font-semibold text-white">Email</h2>
-          <p className="mt-2 text-sm text-zinc-300">
-            Click to email:
-          </p>
+          <p className="mt-2 text-sm text-zinc-300">Click to email:</p>
 
-          {/* Replace the email address below with your real one */}
           <a
-            href="mailto:hello@justintowery.com"
+            href={mailto}
             className="mt-4 inline-flex rounded-xl bg-white px-5 py-3 text-sm font-semibold text-black transition hover:opacity-90"
           >
-            jtowery@mac.com
+            {email}
           </a>
 
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
