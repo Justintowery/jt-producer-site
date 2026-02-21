@@ -16,7 +16,7 @@ export const credits: Credit[] = [
 },
 
   { product: "Hancock Whitney Bank", director: "Zach Merck", company: "Wild Gift", location: "New Orleans, LA" },
-  { product: "Popeys / Baker Mayfield", director: "Brandt Lewis", company: "Omaha Productions", location: "Tampa, FL" },
+  { product: "Popeyes / Baker Mayfield", director: "Brandt Lewis", company: "Omaha Productions", location: "Tampa, FL" },
   { product: "Jersey Mikes / Eli Manning", director: "Patrick Yonally", company: "TenTill Productions", location: "Los Angeles, CA" },
   { product: "Visa Chime", director: "Cole Webley", company: "Sanctuary", location: "Los Angeles, CA" },
   { product: "Checkers & Rally's", director: "Adam Forstadt", company: "Forstadt Agency", location: "Los Angeles, CA" },
