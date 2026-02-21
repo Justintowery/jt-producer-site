@@ -1,9 +1,11 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 
 export default function HomePage() {
+  // Cinematic hero photo motion
   const heroPhotoInitial = { scale: 1.08, y: 0, opacity: 0.95 };
   const heroPhotoAnimate = { scale: 1.0, y: -8, opacity: 1 };
   const heroPhotoTransition = { duration: 1.6, ease: "easeOut" as const };
@@ -12,10 +14,40 @@ export default function HomePage() {
     window.location.href = path;
   };
 
+  // Floating name fades out based on scroll
+  const [nameOpacity, setNameOpacity] = useState(1);
+
+  useEffect(() => {
+    const onScroll = () => {
+      // Fade out over first ~180px of scroll
+      const y = window.scrollY || 0;
+      const fadeDistance = 180;
+      const next = 1 - Math.min(y / fadeDistance, 1);
+      setNameOpacity(next);
+    };
+
+    onScroll(); // set on load
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
     <main>
-      {/* HERO (film-grain temporarily removed to guarantee clicks) */}
+      {/* HERO */}
       <section className="relative min-h-[92vh] w-full overflow-hidden isolate">
+        {/* Floating Name (clickable) */}
+        <motion.button
+          type="button"
+          onClick={() => go("/")}
+          aria-label="Back home"
+          className="absolute left-6 top-6 z-30 select-none text-[11px] tracking-[0.42em] text-white/80 transition hover:text-white"
+          style={{ opacity: nameOpacity }}
+          animate={{ opacity: nameOpacity }}
+          transition={{ duration: 0.2, ease: "linear" }}
+        >
+          JUSTIN TOWERY
+        </motion.button>
+
         {/* Background image (animated) — never clickable */}
         <motion.div
           className="pointer-events-none absolute inset-0 z-0"
@@ -81,8 +113,8 @@ export default function HomePage() {
               transition={{ duration: 0.65, ease: "easeOut", delay: 0.18 }}
               className="mt-8 text-base leading-relaxed text-zinc-200/85 sm:text-lg"
             >
-              I produce commercials — from high-profile celebrity and athlete–driven broadcast campaigns
-              to emerging brands ready to level up.
+              I produce commercials — from high-profile celebrity and athlete–driven broadcast
+              campaigns to emerging brands ready to level up.
             </motion.p>
 
             <motion.div
@@ -119,18 +151,19 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* BELOW THE FOLD */}
       <section className="mx-auto max-w-6xl px-6 py-20">
         <div className="grid gap-10 md:grid-cols-3">
           <div className="md:col-span-2 rounded-2xl border border-white/10 bg-white/5 p-6">
             <h2 className="text-lg font-semibold text-white">About</h2>
             <div className="mt-4 space-y-4 text-sm leading-relaxed text-zinc-300">
               <p>
-                I’ve spent two decades producing commercial work at scale — leading teams, managing complexity,
-                and protecting creative at the highest level.
+                I’ve spent two decades producing commercial work at scale — leading teams,
+                managing complexity, and protecting creative at the highest level.
               </p>
               <p>
-                I’ve worked in high-pressure environments long enough to know that preparation wins — and calm
-                leadership sets the tone for everyone else.
+                I’ve worked in high-pressure environments long enough to know that preparation
+                wins — and calm leadership sets the tone for everyone else.
               </p>
               <p className="text-zinc-200/90">Built in Los Angeles. Working nationally.</p>
               <p className="text-zinc-200/90">Calm isn’t a personality trait. It’s a strategy.</p>
@@ -159,8 +192,6 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-
-
     </main>
   );
 }
