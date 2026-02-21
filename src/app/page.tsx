@@ -7,7 +7,8 @@ import {
   useScroll,
   useTransform,
 } from "framer-motion";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import type { CSSProperties, MouseEvent as ReactMouseEvent, RefObject } from "react";
 
 export default function HomePage() {
   const reduceMotion = useReducedMotion();
@@ -40,19 +41,18 @@ export default function HomePage() {
   /**
    * Ultra-subtle magnetic hover for hero buttons
    * - barely-there translation toward cursor
-   * - preserves clickability (no overlays; pointer events normal)
+   * - preserves clickability
    * - respects prefers-reduced-motion (disabled)
    */
   type MagnetApi = {
-    ref: React.RefObject<HTMLButtonElement>;
-    onMove: (e: React.MouseEvent<HTMLButtonElement>) => void;
+    ref: RefObject<HTMLButtonElement | null>;
+    onMove: (e: ReactMouseEvent<HTMLButtonElement>) => void;
     onLeave: () => void;
-    style: React.CSSProperties;
+    style: CSSProperties;
   };
 
   const useMagnet = (strength = 0.06): MagnetApi => {
-    const ref = useRef<HTMLButtonElement>(null);
-    const reduce = reduceMotion;
+    const ref = useRef<HTMLButtonElement | null>(null);
 
     const [pos, setPos] = useState({ x: 0, y: 0 });
     const raf = useRef<number | null>(null);
@@ -68,8 +68,9 @@ export default function HomePage() {
       };
     }, []);
 
-    const onMove = (e: React.MouseEvent<HTMLButtonElement>) => {
-      if (reduce) return;
+    const onMove = (e: ReactMouseEvent<HTMLButtonElement>) => {
+      if (reduceMotion) return;
+
       const el = ref.current;
       if (!el) return;
 
@@ -85,11 +86,11 @@ export default function HomePage() {
     };
 
     const onLeave = () => {
-      if (reduce) return;
+      if (reduceMotion) return;
       setPosRaf({ x: 0, y: 0 });
     };
 
-    const style: React.CSSProperties = reduce
+    const style: CSSProperties = reduceMotion
       ? {}
       : {
           transform: `translate3d(${pos.x}px, ${pos.y}px, 0)`,
@@ -104,7 +105,6 @@ export default function HomePage() {
   const magnetSecondary = useMagnet(0.05);
   const magnetTertiary = useMagnet(0.05);
 
-  // Optional: add a super faint “lift” shadow when hovering hero buttons
   const heroBtnBase =
     "rounded-2xl px-7 py-4 text-sm font-semibold transition will-change-transform";
   const heroBtnLift = reduceMotion ? "" : "hover:-translate-y-[1px]";
