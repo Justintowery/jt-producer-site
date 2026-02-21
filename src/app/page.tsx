@@ -1,8 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 
 export default function HomePage() {
   // Cinematic hero photo motion
@@ -10,45 +9,21 @@ export default function HomePage() {
   const heroPhotoAnimate = { scale: 1.0, y: -8, opacity: 1 };
   const heroPhotoTransition = { duration: 1.6, ease: "easeOut" as const };
 
+  // Fade floating name out on scroll
+  const { scrollYProgress } = useScroll();
+  const nameOpacity = useTransform(scrollYProgress, [0, 0.15], [1, 0]);
+
   const go = (path: string) => {
     window.location.href = path;
   };
 
-  // Floating name fades out based on scroll
-  const [nameOpacity, setNameOpacity] = useState(1);
-
-  useEffect(() => {
-    const onScroll = () => {
-      // Fade out over first ~180px of scroll
-      const y = window.scrollY || 0;
-      const fadeDistance = 180;
-      const next = 1 - Math.min(y / fadeDistance, 1);
-      setNameOpacity(next);
-    };
-
-    onScroll(); // set on load
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
   return (
     <main>
+      {/* FLOATING NAME (Home Button) */}
+      
       {/* HERO */}
       <section className="relative min-h-[92vh] w-full overflow-hidden isolate">
-        {/* Floating Name (clickable) */}
-        <motion.button
-          type="button"
-          onClick={() => go("/")}
-          aria-label="Back home"
-          className="absolute left-6 top-6 z-30 select-none text-[11px] tracking-[0.42em] text-white/80 transition hover:text-white"
-          style={{ opacity: nameOpacity }}
-          animate={{ opacity: nameOpacity }}
-          transition={{ duration: 0.2, ease: "linear" }}
-        >
-          JUSTIN TOWERY
-        </motion.button>
-
-        {/* Background image (animated) — never clickable */}
+        {/* Background image (animated) */}
         <motion.div
           className="pointer-events-none absolute inset-0 z-0"
           initial={heroPhotoInitial}
@@ -71,11 +46,11 @@ export default function HomePage() {
           />
         </motion.div>
 
-        {/* Overlays — never clickable */}
+        {/* Overlays */}
         <div className="pointer-events-none absolute inset-0 z-10 bg-black/45" />
         <div className="pointer-events-none absolute inset-0 z-10 bg-gradient-to-t from-black via-black/35 to-black/10" />
 
-        {/* Content — clickable */}
+        {/* Content */}
         <div className="relative z-20 mx-auto flex min-h-[92vh] max-w-6xl items-end px-6 pb-16 pt-24">
           <div className="max-w-2xl">
             <motion.p
@@ -113,8 +88,8 @@ export default function HomePage() {
               transition={{ duration: 0.65, ease: "easeOut", delay: 0.18 }}
               className="mt-8 text-base leading-relaxed text-zinc-200/85 sm:text-lg"
             >
-              I produce commercials — from high-profile celebrity and athlete–driven broadcast
-              campaigns to emerging brands ready to level up.
+              I produce commercials — from high-profile celebrity and athlete–driven broadcast campaigns
+              to emerging brands ready to level up.
             </motion.p>
 
             <motion.div
@@ -158,12 +133,12 @@ export default function HomePage() {
             <h2 className="text-lg font-semibold text-white">About</h2>
             <div className="mt-4 space-y-4 text-sm leading-relaxed text-zinc-300">
               <p>
-                I’ve spent two decades producing commercial work at scale — leading teams,
-                managing complexity, and protecting creative at the highest level.
+                I’ve spent two decades producing commercial work at scale — leading teams, managing complexity,
+                and protecting creative at the highest level.
               </p>
               <p>
-                I’ve worked in high-pressure environments long enough to know that preparation
-                wins — and calm leadership sets the tone for everyone else.
+                I’ve worked in high-pressure environments long enough to know that preparation wins — and calm
+                leadership sets the tone for everyone else.
               </p>
               <p className="text-zinc-200/90">Built in Los Angeles. Working nationally.</p>
               <p className="text-zinc-200/90">Calm isn’t a personality trait. It’s a strategy.</p>
@@ -175,6 +150,7 @@ export default function HomePage() {
             <p className="mt-3 text-sm leading-relaxed text-zinc-300">
               Browse credits or reach out for availability. I’ll get back quickly.
             </p>
+
             <div className="mt-5 flex flex-col gap-3">
               <a
                 href="/credits"
@@ -182,6 +158,7 @@ export default function HomePage() {
               >
                 View credits
               </a>
+
               <a
                 href="/contact"
                 className="rounded-xl bg-white px-5 py-3 text-center text-sm font-semibold text-black transition hover:opacity-90"
