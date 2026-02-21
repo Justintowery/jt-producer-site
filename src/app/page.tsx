@@ -160,9 +160,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <div className="fixed bottom-3 right-3 z-[9999] rounded-lg bg-white/10 px-3 py-1 text-xs text-white backdrop-blur">
-        CLICK TEST: film-grain OFF
-      </div>
+
     </main>
   );
 }
