@@ -6,13 +6,14 @@ import { motion, useReducedMotion } from "framer-motion";
 export default function ContactPage() {
   const reduceMotion = useReducedMotion();
 
-  // Single source of truth for your email
+  const phone = "541.912.9145";
   const email = "jtowery@mac.com";
+  const instagramHandle = "@justintowery";
+  const instagramUrl = "https://instagram.com/justintowery";
 
-  // Optional: pre-fill subject/body when someone clicks the email button
   const mailto = `mailto:${email}?subject=${encodeURIComponent(
     "Production Inquiry"
-  )}&body=${encodeURIComponent("Hi Justin,%0D%0A%0D%0A")}`;
+  )}&body=${encodeURIComponent("Hi Justin,\n\n")}`;
 
   return (
     <main className="min-h-screen bg-black text-white">
@@ -41,43 +42,88 @@ export default function ContactPage() {
           transition={{ duration: 0.65, ease: "easeOut", delay: 0.12 }}
           className="mt-6 text-lg leading-relaxed text-zinc-200/85"
         >
-          For availability, bids, or production questions — reach out and I’ll get back quickly.
+          Availability, bids, or a quick gut-check — holler at me. I’ll get back
+          quickly.
         </motion.p>
 
-        <div className="mt-10 rounded-2xl border border-white/10 bg-white/5 p-6">
-          <h2 className="text-lg font-semibold text-white">Email</h2>
-          <p className="mt-2 text-sm text-zinc-300">Click to email:</p>
+        <motion.div
+          initial={reduceMotion ? false : { opacity: 0, y: 10 }}
+          animate={reduceMotion ? false : { opacity: 1, y: 0 }}
+          transition={{ duration: 0.65, ease: "easeOut", delay: 0.18 }}
+          className="mt-10 rounded-2xl border border-white/10 bg-white/5 p-7 sm:p-8"
+        >
+          <div className="grid gap-6">
+            <div>
+              <p className="text-xs uppercase tracking-[0.3em] text-zinc-200/80">
+                Cell
+              </p>
+              <a
+                href={`tel:${phone.replace(/\./g, "")}`}
+                className="mt-2 inline-flex text-xl font-semibold tracking-tight text-white hover:text-white/90"
+              >
+                {phone}
+              </a>
+            </div>
 
-          <a
-            href={mailto}
-            className="mt-4 inline-flex rounded-xl bg-white px-5 py-3 text-sm font-semibold text-black transition hover:opacity-90"
-          >
-            {email}
-          </a>
+            <div>
+              <p className="text-xs uppercase tracking-[0.3em] text-zinc-200/80">
+                Email
+              </p>
+              <a
+                href={mailto}
+                className="mt-2 inline-flex text-xl font-semibold tracking-tight text-white hover:text-white/90"
+              >
+                {email}
+              </a>
 
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <div className="mt-4">
+                <a
+                  href={mailto}
+                  className="inline-flex rounded-2xl bg-white px-5 py-3 text-sm font-semibold text-black transition hover:opacity-90"
+                >
+                  Email Justin
+                </a>
+              </div>
+            </div>
+
+            <div>
+              <p className="text-xs uppercase tracking-[0.3em] text-zinc-200/80">
+                Instagram
+              </p>
+              <a
+                href={instagramUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="mt-2 inline-flex text-xl font-semibold tracking-tight text-white hover:text-white/90"
+              >
+                {instagramHandle}
+              </a>
+            </div>
+          </div>
+
+          <div className="mt-10 flex flex-col gap-3 sm:flex-row">
             <Link
               href="/"
-              className="rounded-xl border border-white/15 bg-white/0 px-5 py-3 text-center text-sm font-semibold text-white/90 transition hover:border-white/35 hover:text-white"
+              className="rounded-2xl border border-white/15 bg-white/0 px-5 py-3 text-center text-sm font-semibold text-white/90 transition hover:border-white/35 hover:text-white"
             >
               Back to home
             </Link>
 
             <Link
               href="/work"
-              className="rounded-xl border border-white/15 bg-white/0 px-5 py-3 text-center text-sm font-semibold text-white/90 transition hover:border-white/35 hover:text-white"
+              className="rounded-2xl border border-white/15 bg-white/0 px-5 py-3 text-center text-sm font-semibold text-white/90 transition hover:border-white/35 hover:text-white"
             >
               View work
             </Link>
 
             <Link
               href="/credits"
-              className="rounded-xl border border-white/15 bg-white/0 px-5 py-3 text-center text-sm font-semibold text-white/90 transition hover:border-white/35 hover:text-white"
+              className="rounded-2xl border border-white/15 bg-white/0 px-5 py-3 text-center text-sm font-semibold text-white/90 transition hover:border-white/35 hover:text-white"
             >
               Credits
             </Link>
           </div>
-        </div>
+        </motion.div>
       </section>
     </main>
   );
