@@ -16,19 +16,22 @@ export default function HomePage() {
   const heroY = useTransform(scrollYProgress, [0, 0.35], [0, -42]);
   const heroScale = useTransform(scrollYProgress, [0, 0.35], [1.02, 1.0]);
 
-  // Contact shortcuts (quietly useful, fills space elegantly)
+  // Contact shortcuts
   const email = "jtowery@mac.com";
   const phone = "541.912.9145";
+
+  // ✅ CLEAN MAILTO (no encoded body)
   const mailto = `mailto:${email}?subject=${encodeURIComponent(
     "Production Inquiry"
-  )}&body=${encodeURIComponent("Hi Justin,%0D%0A%0D%0A")}`;
+  )}`;
+
   const smsHref = `sms:${phone.replace(/\./g, "")}`;
 
   const go = (path: string) => {
     window.location.href = path;
   };
 
-  // Tasteful film grain (SVG turbulence) as a data-uri background
+  // Tasteful film grain (SVG turbulence)
   const grainSvg = encodeURIComponent(`
     <svg xmlns="http://www.w3.org/2000/svg" width="220" height="220" viewBox="0 0 220 220">
       <filter id="n">
@@ -43,7 +46,6 @@ export default function HomePage() {
     <main className="bg-black text-white">
       {/* HERO */}
       <section className="relative min-h-[92vh] w-full overflow-hidden isolate">
-        {/* Background image (animated + subtle parallax) */}
         <motion.div
           className="pointer-events-none absolute inset-0 z-0"
           initial={heroPhotoInitial}
@@ -74,11 +76,9 @@ export default function HomePage() {
           />
         </motion.div>
 
-        {/* Overlays (depth + readability) */}
         <div className="pointer-events-none absolute inset-0 z-10 bg-black/45" />
         <div className="pointer-events-none absolute inset-0 z-10 bg-gradient-to-t from-black via-black/35 to-black/10" />
 
-        {/* Film grain (very subtle) */}
         <div
           className="pointer-events-none absolute inset-0 z-20 opacity-[0.06] mix-blend-overlay"
           style={{
@@ -87,7 +87,6 @@ export default function HomePage() {
           }}
         />
 
-        {/* Content */}
         <div className="relative z-30 mx-auto flex min-h-[92vh] max-w-6xl items-end px-6 pb-16 pt-24">
           <div className="max-w-2xl">
             <motion.p
@@ -162,13 +161,11 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* Soft transition into below-the-fold */}
         <div className="pointer-events-none absolute bottom-0 left-0 right-0 z-30 h-16 bg-gradient-to-b from-transparent to-black" />
       </section>
 
       {/* BELOW THE FOLD */}
       <section className="relative mx-auto max-w-6xl px-6 py-20">
-        {/* Hairline + fade (premium separation) */}
         <div className="pointer-events-none absolute -top-10 left-0 right-0 h-10 bg-gradient-to-b from-black to-transparent" />
         <div className="mb-10 h-px w-full bg-white/10" />
 
@@ -189,14 +186,11 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Work Together card (intentional content + premium depth) */}
           <div className="relative overflow-hidden rounded-2xl border border-white/[0.08] bg-white/[0.03] p-6 backdrop-blur-sm">
-            {/* Subtle top highlight line */}
             <div className="pointer-events-none absolute left-0 top-0 h-px w-full bg-gradient-to-r from-transparent via-white/25 to-transparent" />
 
             <h2 className="text-lg font-semibold text-white">Work together</h2>
 
-            {/* Micro-actions (fills space, feels bespoke) */}
             <div className="mt-6 flex flex-wrap gap-2">
               <a
                 href={mailto}
@@ -223,7 +217,6 @@ export default function HomePage() {
               </a>
             </div>
 
-            {/* Tiny signature detail */}
             <p className="mt-4 text-xs text-zinc-400/80">
               {email} • {phone}
             </p>
