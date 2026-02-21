@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import { motion } from "framer-motion";
 
 export default function HomePage() {
@@ -9,10 +8,14 @@ export default function HomePage() {
   const heroPhotoAnimate = { scale: 1.0, y: -8, opacity: 1 };
   const heroPhotoTransition = { duration: 1.6, ease: "easeOut" as const };
 
+  const go = (path: string) => {
+    window.location.href = path;
+  };
+
   return (
     <main>
-      {/* HERO */}
-      <section className="film-grain relative min-h-[92vh] w-full overflow-hidden isolate">
+      {/* HERO (film-grain temporarily removed to guarantee clicks) */}
+      <section className="relative min-h-[92vh] w-full overflow-hidden isolate">
         {/* Background image (animated) — never clickable */}
         <motion.div
           className="pointer-events-none absolute inset-0 z-0"
@@ -40,8 +43,8 @@ export default function HomePage() {
         <div className="pointer-events-none absolute inset-0 z-10 bg-black/45" />
         <div className="pointer-events-none absolute inset-0 z-10 bg-gradient-to-t from-black via-black/35 to-black/10" />
 
-        {/* Content — MUST be clickable */}
-        <div className="relative z-20 pointer-events-auto mx-auto flex min-h-[92vh] max-w-6xl items-end px-6 pb-16 pt-24">
+        {/* Content — clickable */}
+        <div className="relative z-20 mx-auto flex min-h-[92vh] max-w-6xl items-end px-6 pb-16 pt-24">
           <div className="max-w-2xl">
             <motion.p
               initial={{ opacity: 0, y: 10 }}
@@ -88,32 +91,34 @@ export default function HomePage() {
               transition={{ duration: 0.7, ease: "easeOut", delay: 0.25 }}
               className="mt-10 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4"
             >
-              <Link
-                href="/work"
+              <button
+                type="button"
+                onClick={() => go("/work")}
                 className="w-full sm:w-auto rounded-2xl bg-white px-7 py-4 text-center text-sm font-semibold text-black shadow-sm transition hover:opacity-90"
               >
                 View work
-              </Link>
+              </button>
 
-              <Link
-                href="/credits"
+              <button
+                type="button"
+                onClick={() => go("/credits")}
                 className="w-full sm:w-auto rounded-2xl border border-white/25 bg-white/0 px-7 py-4 text-center text-sm font-semibold text-white/90 backdrop-blur-sm transition hover:border-white/45 hover:text-white"
               >
                 Credits
-              </Link>
+              </button>
 
-              <Link
-                href="/contact"
+              <button
+                type="button"
+                onClick={() => go("/contact")}
                 className="w-full sm:w-auto rounded-2xl border border-white/25 bg-white/0 px-7 py-4 text-center text-sm font-semibold text-white/90 backdrop-blur-sm transition hover:border-white/45 hover:text-white"
               >
                 Contact
-              </Link>
+              </button>
             </motion.div>
           </div>
         </div>
       </section>
 
-      {/* BELOW THE FOLD */}
       <section className="mx-auto max-w-6xl px-6 py-20">
         <div className="grid gap-10 md:grid-cols-3">
           <div className="md:col-span-2 rounded-2xl border border-white/10 bg-white/5 p-6">
@@ -138,26 +143,25 @@ export default function HomePage() {
               Browse credits or reach out for availability. I’ll get back quickly.
             </p>
             <div className="mt-5 flex flex-col gap-3">
-              <Link
+              <a
                 href="/credits"
                 className="rounded-xl border border-white/15 bg-white/0 px-5 py-3 text-center text-sm font-semibold text-white/90 transition hover:border-white/35 hover:text-white"
               >
                 View credits
-              </Link>
-              <Link
+              </a>
+              <a
                 href="/contact"
                 className="rounded-xl bg-white px-5 py-3 text-center text-sm font-semibold text-black transition hover:opacity-90"
               >
                 Contact
-              </Link>
+              </a>
             </div>
           </div>
         </div>
       </section>
 
-      {/* DEPLOY/CACHE CONFIRMATION (temporary) */}
       <div className="fixed bottom-3 right-3 z-[9999] rounded-lg bg-white/10 px-3 py-1 text-xs text-white backdrop-blur">
-        CLICK FIX TEST: 2026-02-20 B
+        CLICK TEST: film-grain OFF
       </div>
     </main>
   );
