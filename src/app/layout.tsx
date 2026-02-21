@@ -15,7 +15,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="bg-black text-white antialiased">
-        <FloatingName />
+        {/* IMPORTANT:
+            FloatingName is decorative and must NEVER capture clicks.
+            Wrapping it in pointer-events-none guarantees it can't block buttons/links.
+        */}
+        <div className="pointer-events-none" aria-hidden="true">
+          <FloatingName />
+        </div>
+
         <main>{children}</main>
       </body>
     </html>

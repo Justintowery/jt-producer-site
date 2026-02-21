@@ -5,13 +5,27 @@ body {
   color: #f5f5f5;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
+
 @keyframes fadeUp {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
+
 @keyframes rowIn {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .animate-fade-up {
@@ -23,18 +37,36 @@ body {
   opacity: 0;
   animation: rowIn 650ms cubic-bezier(.2,.8,.2,1) forwards;
 }
+
 /* Subtle film grain overlay */
 .film-grain {
   position: relative;
+}
+
+/* IMPORTANT: only the overlay should ignore clicks (NOT the whole section) */
+.film-grain::before,
+.film-grain::after {
+  pointer-events: none !important;
 }
 
 .film-grain::after {
   content: "";
   position: absolute;
   inset: 0;
-  pointer-events: none;
   opacity: 0.08; /* adjust 0.05–0.12 */
   mix-blend-mode: overlay;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
   background-size: 180px 180px;
+}
+
+/* Safety: if you add other decorative overlays, they should never block clicks */
+.noise::before,
+.noise::after,
+[data-overlay]::before,
+[data-overlay]::after,
+.overlay::before,
+.overlay::after,
+.vignette::before,
+.vignette::after {
+  pointer-events: none !important;
 }

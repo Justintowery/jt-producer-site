@@ -5,12 +5,20 @@ import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
 
 export default function HomePage() {
+<<<<<<< Updated upstream
   const reduceMotion = useReducedMotion();
+=======
+  // Cinematic hero photo motion
+  const heroPhotoInitial = { scale: 1.08, y: 0, opacity: 0.95 };
+  const heroPhotoAnimate = { scale: 1.0, y: -8, opacity: 1 };
+  const heroPhotoTransition = { duration: 1.6, ease: "easeOut" as const };
+>>>>>>> Stashed changes
 
   return (
     <main>
       {/* HERO */}
       <section className="film-grain relative min-h-[92vh] w-full overflow-hidden">
+<<<<<<< Updated upstream
         {/* Cinematic Background */}
         <motion.div
           className="absolute inset-0 will-change-transform"
@@ -41,6 +49,16 @@ export default function HomePage() {
           }
         >
           {/* Mobile */}
+=======
+        {/* Background image (animated) */}
+        <motion.div
+          className="pointer-events-none absolute inset-0"
+          initial={heroPhotoInitial}
+          animate={heroPhotoAnimate}
+          transition={heroPhotoTransition}
+        >
+          {/* Background image (mobile) */}
+>>>>>>> Stashed changes
           <Image
             src="/hero-mobile.jpg"
             alt="Justin Towery on set"
@@ -49,7 +67,11 @@ export default function HomePage() {
             className="object-cover object-top md:hidden"
           />
 
+<<<<<<< Updated upstream
           {/* Desktop */}
+=======
+          {/* Background image (desktop) */}
+>>>>>>> Stashed changes
           <Image
             src="/hero.jpg"
             alt="Justin Towery on set"
@@ -59,12 +81,18 @@ export default function HomePage() {
           />
         </motion.div>
 
+<<<<<<< Updated upstream
         {/* Overlays */}
         <div className="absolute inset-0 bg-black/45" />
         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/35 to-black/10" />
+=======
+        {/* Overlays for readability */}
+        <div className="pointer-events-none absolute inset-0 bg-black/45" />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black via-black/35 to-black/10" />
+>>>>>>> Stashed changes
 
         {/* Content */}
-        <div className="relative mx-auto flex min-h-[92vh] max-w-6xl items-end px-6 pb-16 pt-24">
+        <div className="relative z-10 mx-auto flex min-h-[92vh] max-w-6xl items-end px-6 pb-16 pt-24">
           <div className="max-w-2xl">
             <motion.p
               initial={{ opacity: 0, y: 8 }}
@@ -101,8 +129,8 @@ export default function HomePage() {
               transition={{ duration: 0.7, ease: "easeOut", delay: 0.22 }}
               className="mt-8 text-base leading-relaxed text-zinc-200/85 sm:text-lg"
             >
-              I produce commercials — from high-profile celebrity and athlete–driven broadcast
-              campaigns to emerging brands ready to level up.
+              I produce commercials — from high-profile celebrity and athlete–driven broadcast campaigns
+              to emerging brands ready to level up.
             </motion.p>
 
             <motion.div
@@ -144,12 +172,12 @@ export default function HomePage() {
             <h2 className="text-lg font-semibold text-white">About</h2>
             <div className="mt-4 space-y-4 text-sm leading-relaxed text-zinc-300">
               <p>
-                I’ve spent two decades producing commercial work at scale — leading teams,
-                managing complexity, and protecting creative at the highest level.
+                I’ve spent two decades producing commercial work at scale — leading teams, managing complexity,
+                and protecting creative at the highest level.
               </p>
               <p>
-                I’ve worked in high-pressure environments long enough to know that preparation
-                wins — and calm leadership sets the tone for everyone else.
+                I’ve worked in high-pressure environments long enough to know that preparation wins — and calm
+                leadership sets the tone for everyone else.
               </p>
               <p className="text-zinc-200/90">Built in Los Angeles. Working nationally.</p>
               <p className="text-zinc-200/90">Calm isn’t a personality trait. It’s a strategy.</p>
@@ -169,6 +197,7 @@ export default function HomePage() {
               >
                 View credits
               </Link>
+
               <Link
                 href="/contact"
                 className="rounded-xl bg-white px-5 py-3 text-center text-sm font-semibold text-black transition hover:opacity-90"
