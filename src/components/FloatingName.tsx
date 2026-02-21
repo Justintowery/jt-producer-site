@@ -14,7 +14,6 @@ export default function FloatingName() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Fade out over first 300px
   const fadeDistance = 300;
   const opacity = Math.max(1 - scrollY / fadeDistance, 0);
 
@@ -34,34 +33,31 @@ export default function FloatingName() {
           group
           inline-flex items-center
           rounded-2xl
-          px-3 py-2
-          border border-transparent
-          bg-transparent
+          px-4 py-2
           uppercase
           tracking-[0.35em]
           text-[18px] md:text-[22px]
           font-medium
-          text-white/85
+          text-white/80
+          border border-transparent
           transition-all duration-200 ease-out
           hover:text-white
-          hover:bg-white/[0.04]
-          hover:border-white/15
+          hover:bg-white/10
+          hover:border-white/30
+          hover:-translate-y-[1px]
           focus-visible:outline-none
           focus-visible:ring-2
-          focus-visible:ring-white/25
+          focus-visible:ring-white/40
           cursor-pointer
         "
         aria-label="Go to home"
       >
         <span className="relative">
           JUSTIN TOWERY
-          {/* subtle underline that fades in on hover */}
           <span
             className="
-              pointer-events-none
-              absolute left-0 -bottom-1
-              h-px w-full
-              bg-white/35
+              absolute left-0 -bottom-1 h-px w-full
+              bg-white
               opacity-0
               transition-opacity duration-200 ease-out
               group-hover:opacity-100
