@@ -139,8 +139,18 @@ export default function HomePage() {
             </div>
           </div>
 
-          <div className="rounded-2xl border border-white/10 bg-white/5 p-6 flex flex-col justify-between">
-            <div>
+          <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
+  <h2 className="text-lg font-semibold text-white">Work together</h2>
+
+  <div className="mt-6">
+    <a
+      href="/contact"
+      className="block w-full rounded-xl bg-white px-5 py-3 text-center text-sm font-semibold text-black transition hover:opacity-90"
+    >
+      Contact
+    </a>
+  </div>
+</div>
               <h2 className="text-lg font-semibold text-white">Work together</h2>
             </div>
 
