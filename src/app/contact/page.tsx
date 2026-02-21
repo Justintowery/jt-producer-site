@@ -62,8 +62,8 @@ export default function HomePage() {
         </motion.div>
 
         {/* Overlays for readability */}
-        <div className="absolute inset-0 bg-black/45" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/35 to-black/10" />
+      <div className="pointer-events-none absolute inset-0 bg-black/45" />
+<div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black via-black/35 to-black/10" />
 
         {/* Content */}
         <div className="relative mx-auto flex min-h-[92vh] max-w-6xl items-end px-6 pb-16 pt-24">
