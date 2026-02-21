@@ -5,7 +5,6 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 
 export default function HomePage() {
-  // Cinematic hero photo motion
   const heroPhotoInitial = { scale: 1.08, y: 0, opacity: 0.95 };
   const heroPhotoAnimate = { scale: 1.0, y: -8, opacity: 1 };
   const heroPhotoTransition = { duration: 1.6, ease: "easeOut" as const };
@@ -13,10 +12,10 @@ export default function HomePage() {
   return (
     <main>
       {/* HERO */}
-      <section className="film-grain relative min-h-[92vh] w-full overflow-hidden">
-        {/* Background image (animated) */}
+      <section className="film-grain relative min-h-[92vh] w-full overflow-hidden isolate">
+        {/* Background image (animated) — never clickable */}
         <motion.div
-          className="pointer-events-none absolute inset-0"
+          className="pointer-events-none absolute inset-0 z-0"
           initial={heroPhotoInitial}
           animate={heroPhotoAnimate}
           transition={heroPhotoTransition}
@@ -37,12 +36,12 @@ export default function HomePage() {
           />
         </motion.div>
 
-        {/* Overlays for readability */}
-        <div className="pointer-events-none absolute inset-0 bg-black/45" />
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black via-black/35 to-black/10" />
+        {/* Overlays — never clickable */}
+        <div className="pointer-events-none absolute inset-0 z-10 bg-black/45" />
+        <div className="pointer-events-none absolute inset-0 z-10 bg-gradient-to-t from-black via-black/35 to-black/10" />
 
-        {/* Content */}
-        <div className="relative z-10 mx-auto flex min-h-[92vh] max-w-6xl items-end px-6 pb-16 pt-24">
+        {/* Content — MUST be clickable */}
+        <div className="relative z-20 pointer-events-auto mx-auto flex min-h-[92vh] max-w-6xl items-end px-6 pb-16 pt-24">
           <div className="max-w-2xl">
             <motion.p
               initial={{ opacity: 0, y: 10 }}
@@ -156,9 +155,9 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* DEPLOY TEST LABEL (temporary) */}
+      {/* DEPLOY/CACHE CONFIRMATION (temporary) */}
       <div className="fixed bottom-3 right-3 z-[9999] rounded-lg bg-white/10 px-3 py-1 text-xs text-white backdrop-blur">
-        DEPLOY TEST: 2026-02-20 A
+        CLICK FIX TEST: 2026-02-20 B
       </div>
     </main>
   );
