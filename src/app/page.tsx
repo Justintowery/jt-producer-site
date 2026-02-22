@@ -120,13 +120,11 @@ export default function HomePage() {
     { name: "Chime", src: "/logos/chime.svg" },
   ];
 
-  // Build a long “filmstrip” so there’s no obvious reset.
-  // 4x is plenty for wide monitors.
-  const filmstrip = Array.from({ length: 4 }, () => logos).flat();
+  // Long filmstrip to avoid obvious reset
+  const filmstrip = Array.from({ length: 5 }, () => logos).flat();
 
   return (
     <main className="bg-black text-white">
-      {/* Marquee keyframes */}
       <style jsx global>{`
         @keyframes jtLogoFilmstrip {
           0% {
@@ -181,7 +179,7 @@ export default function HomePage() {
           }}
         />
 
-        <div className="relative z-30 mx-auto flex min-h-[92vh] max-w-6xl items-end px-6 pb-20 pt-24">
+        <div className="relative z-30 mx-auto flex min-h-[92vh] max-w-6xl items-end px-6 pb-24 pt-24">
           <div className="w-full">
             <div className="max-w-2xl">
               <motion.p
@@ -271,10 +269,9 @@ export default function HomePage() {
           initial={reduceMotion ? false : { opacity: 0 }}
           animate={reduceMotion ? false : { opacity: 1 }}
           transition={{ duration: 0.9, delay: 0.55 }}
-          className="absolute inset-x-0 bottom-8 z-30 hidden md:block"
+          className="absolute inset-x-0 bottom-14 z-30 hidden md:block"
           aria-label="Client logos"
         >
-          {/* Edge fade (no box) */}
           <div
             className="mx-auto max-w-6xl px-6"
             style={{
@@ -285,64 +282,68 @@ export default function HomePage() {
             }}
           >
             <div className="relative overflow-hidden">
-              {/* Track */}
+              {/* subtle lift behind strip (NOT a box) */}
+              <div className="pointer-events-none absolute inset-0">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-black/10 to-transparent" />
+              </div>
+
               <div
-                className="flex w-[200%] items-center gap-14"
+                className="relative flex w-[200%] items-center gap-16 py-3"
                 style={
                   reduceMotion
                     ? undefined
                     : {
-                        animation: "jtLogoFilmstrip 46s linear infinite",
+                        animation: "jtLogoFilmstrip 56s linear infinite",
                         willChange: "transform",
                       }
                 }
               >
                 {/* First half */}
-                <div className="flex w-1/2 items-center gap-14">
+                <div className="flex w-1/2 items-center gap-16">
                   {filmstrip.map((logo, idx) => (
                     <div
                       key={`${logo.name}-a-${idx}`}
-                      className="group flex h-10 items-center"
+                      className="group flex h-12 items-center"
                       title={logo.name}
                     >
                       <Image
                         src={logo.src}
                         alt={logo.name}
-                        width={220}
-                        height={70}
-                        className="h-9 w-auto opacity-40 grayscale transition duration-300 group-hover:opacity-90 group-hover:grayscale-0"
+                        width={240}
+                        height={80}
+                        className="h-10 w-auto opacity-60 grayscale transition duration-300 group-hover:opacity-100 group-hover:grayscale-0"
                       />
                     </div>
                   ))}
                 </div>
 
-                {/* Second half (same content) */}
-                <div className="flex w-1/2 items-center gap-14">
+                {/* Second half */}
+                <div className="flex w-1/2 items-center gap-16">
                   {filmstrip.map((logo, idx) => (
                     <div
                       key={`${logo.name}-b-${idx}`}
-                      className="group flex h-10 items-center"
+                      className="group flex h-12 items-center"
                       title={logo.name}
                     >
                       <Image
                         src={logo.src}
                         alt={logo.name}
-                        width={220}
-                        height={70}
-                        className="h-9 w-auto opacity-40 grayscale transition duration-300 group-hover:opacity-90 group-hover:grayscale-0"
+                        width={240}
+                        height={80}
+                        className="h-10 w-auto opacity-60 grayscale transition duration-300 group-hover:opacity-100 group-hover:grayscale-0"
                       />
                     </div>
                   ))}
                 </div>
               </div>
 
-              {/* Optional: tiny highlight line to feel “editorial”, not a box */}
-              <div className="pointer-events-none mt-5 h-px w-full bg-white/10" />
+              {/* whisper line (optional) */}
+              <div className="pointer-events-none mt-2 h-px w-full bg-white/10" />
             </div>
           </div>
         </motion.div>
 
-        {/* MOBILE: static wrap row (no label) */}
+        {/* MOBILE: static wrap row */}
         <motion.div
           initial={reduceMotion ? false : { opacity: 0, y: 8 }}
           animate={reduceMotion ? false : { opacity: 1, y: 0 }}
@@ -356,9 +357,9 @@ export default function HomePage() {
                 <Image
                   src={logo.src}
                   alt={logo.name}
-                  width={170}
-                  height={34}
-                  className="h-7 w-auto opacity-55 grayscale transition duration-300 group-hover:opacity-100 group-hover:grayscale-0"
+                  width={180}
+                  height={40}
+                  className="h-7 w-auto opacity-65 grayscale transition duration-300 group-hover:opacity-100 group-hover:grayscale-0"
                 />
               </div>
             ))}
@@ -389,7 +390,6 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* GLOW CARD */}
           <div
             onMouseMove={(e) => {
               const rect = e.currentTarget.getBoundingClientRect();
