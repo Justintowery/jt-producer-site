@@ -120,18 +120,20 @@ export default function HomePage() {
     { name: "Chime", src: "/logos/chime.svg" },
   ];
 
-  const marqueeLogos = [...logos, ...logos];
+  // Build a long “filmstrip” so there’s no obvious reset.
+  // 4x is plenty for wide monitors.
+  const filmstrip = Array.from({ length: 4 }, () => logos).flat();
 
   return (
     <main className="bg-black text-white">
       {/* Marquee keyframes */}
       <style jsx global>{`
-        @keyframes jtLogoMarquee {
+        @keyframes jtLogoFilmstrip {
           0% {
-            transform: translateY(0);
+            transform: translate3d(0, 0, 0);
           }
           100% {
-            transform: translateY(-50%);
+            transform: translate3d(-50%, 0, 0);
           }
         }
       `}</style>
@@ -179,9 +181,8 @@ export default function HomePage() {
           }}
         />
 
-        <div className="relative z-30 mx-auto flex min-h-[92vh] max-w-6xl items-end px-6 pb-16 pt-24">
-          <div className="w-full lg:grid lg:grid-cols-[1fr_340px] lg:items-end lg:gap-12">
-            {/* LEFT */}
+        <div className="relative z-30 mx-auto flex min-h-[92vh] max-w-6xl items-end px-6 pb-20 pt-24">
+          <div className="w-full">
             <div className="max-w-2xl">
               <motion.p
                 initial={reduceMotion ? false : { opacity: 0, y: 10 }}
@@ -261,97 +262,108 @@ export default function HomePage() {
                   Contact
                 </button>
               </motion.div>
+            </div>
+          </div>
+        </div>
 
-              {/* Mobile fallback */}
-              <motion.div
-                initial={reduceMotion ? false : { opacity: 0, y: 10 }}
-                animate={reduceMotion ? false : { opacity: 1, y: 0 }}
-                transition={{ duration: 0.7, delay: 0.35 }}
-                className="mt-12 lg:hidden"
+        {/* FILMSTRIP LOGO MARQUEE (desktop) */}
+        <motion.div
+          initial={reduceMotion ? false : { opacity: 0 }}
+          animate={reduceMotion ? false : { opacity: 1 }}
+          transition={{ duration: 0.9, delay: 0.55 }}
+          className="absolute inset-x-0 bottom-8 z-30 hidden md:block"
+          aria-label="Client logos"
+        >
+          {/* Edge fade (no box) */}
+          <div
+            className="mx-auto max-w-6xl px-6"
+            style={{
+              maskImage:
+                "linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%)",
+              WebkitMaskImage:
+                "linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%)",
+            }}
+          >
+            <div className="relative overflow-hidden">
+              {/* Track */}
+              <div
+                className="flex w-[200%] items-center gap-14"
+                style={
+                  reduceMotion
+                    ? undefined
+                    : {
+                        animation: "jtLogoFilmstrip 46s linear infinite",
+                        willChange: "transform",
+                      }
+                }
               >
-                <p className="text-[11px] uppercase tracking-[0.32em] text-zinc-200/60">
-                  Selected clients
-                </p>
-
-                <div className="mt-5 flex flex-wrap items-center gap-x-10 gap-y-6">
-                  {logos.map((logo) => (
-                    <div key={logo.name} className="group flex h-7 items-center">
+                {/* First half */}
+                <div className="flex w-1/2 items-center gap-14">
+                  {filmstrip.map((logo, idx) => (
+                    <div
+                      key={`${logo.name}-a-${idx}`}
+                      className="group flex h-10 items-center"
+                      title={logo.name}
+                    >
                       <Image
                         src={logo.src}
                         alt={logo.name}
-                        width={170}
-                        height={34}
-                        className="h-7 w-auto opacity-70 grayscale transition duration-300 group-hover:opacity-100 group-hover:grayscale-0"
+                        width={220}
+                        height={70}
+                        className="h-9 w-auto opacity-40 grayscale transition duration-300 group-hover:opacity-90 group-hover:grayscale-0"
                       />
                     </div>
                   ))}
                 </div>
-              </motion.div>
+
+                {/* Second half (same content) */}
+                <div className="flex w-1/2 items-center gap-14">
+                  {filmstrip.map((logo, idx) => (
+                    <div
+                      key={`${logo.name}-b-${idx}`}
+                      className="group flex h-10 items-center"
+                      title={logo.name}
+                    >
+                      <Image
+                        src={logo.src}
+                        alt={logo.name}
+                        width={220}
+                        height={70}
+                        className="h-9 w-auto opacity-40 grayscale transition duration-300 group-hover:opacity-90 group-hover:grayscale-0"
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Optional: tiny highlight line to feel “editorial”, not a box */}
+              <div className="pointer-events-none mt-5 h-px w-full bg-white/10" />
             </div>
-
-            {/* RIGHT: floating marquee (no box) */}
-            <motion.aside
-              initial={reduceMotion ? false : { opacity: 0, y: 12 }}
-              animate={reduceMotion ? false : { opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.35 }}
-              className="hidden lg:block"
-            >
-              {/* Small header (no frame) */}
-              <div className="flex items-center gap-4">
-                <p className="text-[11px] uppercase tracking-[0.32em] text-zinc-200/55">
-                  Selected clients
-                </p>
-                <div className="h-px flex-1 bg-white/10" />
-              </div>
-
-              {/* Floating scroll area */}
-              <div
-                className="relative mt-6 h-[300px] overflow-hidden"
-                style={{
-                  maskImage:
-                    "linear-gradient(to bottom, transparent 0%, black 14%, black 86%, transparent 100%)",
-                  WebkitMaskImage:
-                    "linear-gradient(to bottom, transparent 0%, black 14%, black 86%, transparent 100%)",
-                }}
-              >
-                {/* Subtle glass veil behind logos (not a box) */}
-                <div className="pointer-events-none absolute inset-0">
-                  <div className="absolute inset-0 bg-gradient-to-l from-white/[0.06] via-white/[0.02] to-transparent blur-[0.2px]" />
-                </div>
-
-                <div
-                  className="absolute inset-0"
-                  style={
-                    reduceMotion
-                      ? undefined
-                      : { animation: "jtLogoMarquee 22s linear infinite" }
-                  }
-                >
-                  <div className="flex flex-col gap-8 py-2 pr-2">
-                    {marqueeLogos.map((logo, idx) => (
-                      <div
-                        key={`${logo.name}-${idx}`}
-                        className="group flex items-center"
-                        title={logo.name}
-                      >
-                        <Image
-                          src={logo.src}
-                          alt={logo.name}
-                          width={220}
-                          height={60}
-                          className="h-9 w-auto opacity-55 grayscale transition duration-300 group-hover:opacity-95 group-hover:grayscale-0"
-                        />
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              {/* Tiny spacer so it breathes */}
-              <div className="h-2" />
-            </motion.aside>
           </div>
-        </div>
+        </motion.div>
+
+        {/* MOBILE: static wrap row (no label) */}
+        <motion.div
+          initial={reduceMotion ? false : { opacity: 0, y: 8 }}
+          animate={reduceMotion ? false : { opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.45 }}
+          className="mx-auto max-w-6xl px-6 pb-10 md:hidden"
+          aria-label="Client logos"
+        >
+          <div className="mt-10 flex flex-wrap items-center gap-x-10 gap-y-6">
+            {logos.map((logo) => (
+              <div key={logo.name} className="group flex h-7 items-center">
+                <Image
+                  src={logo.src}
+                  alt={logo.name}
+                  width={170}
+                  height={34}
+                  className="h-7 w-auto opacity-55 grayscale transition duration-300 group-hover:opacity-100 group-hover:grayscale-0"
+                />
+              </div>
+            ))}
+          </div>
+        </motion.div>
       </section>
 
       {/* BELOW THE FOLD */}
@@ -373,9 +385,7 @@ export default function HomePage() {
                 else.
               </p>
               <p className="text-zinc-200/85">Built in Los Angeles. Working nationally.</p>
-              <p className="text-zinc-200/85">
-                Calm isn’t a personality trait. It’s a strategy.
-              </p>
+              <p className="text-zinc-200/85">Calm isn’t a personality trait. It’s a strategy.</p>
             </div>
           </div>
 
