@@ -110,14 +110,14 @@ export default function HomePage() {
   const heroBtnLift = reduceMotion ? "" : "hover:-translate-y-[1px]";
 
   const logos = [
-    { name: "Amazon", src: "/logos/amazon.svg" },
-    { name: "Hulu", src: "/logos/hulu.svg" },
-    { name: "Verizon", src: "/logos/verizon.svg" },
-    { name: "Ford", src: "/logos/ford.svg" },
-    { name: "Sony", src: "/logos/sony.svg" },
-    { name: "Puma", src: "/logos/puma.svg" },
-    { name: "Columbia Sportswear", src: "/logos/columbia-sportswear.svg" },
-    { name: "Chime", src: "/logos/chime.svg" },
+    { name: "Amazon", src: "/logos/amazon.svg", scale: 0.92 },
+    { name: "Hulu", src: "/logos/hulu.svg", scale: 1.0 },
+    { name: "Verizon", src: "/logos/verizon.svg", scale: 1.0 },
+    { name: "Ford", src: "/logos/ford.svg", scale: 1.05 },
+    { name: "Sony", src: "/logos/sony.svg", scale: 0.9 },
+    { name: "Puma", src: "/logos/puma.svg", scale: 1.0 },
+    { name: "Columbia Sportswear", src: "/logos/columbia-sportswear.svg", scale: 0.95 },
+    { name: "Chime", src: "/logos/chime.svg", scale: 0.95 },
   ];
 
   return (
@@ -154,8 +154,9 @@ export default function HomePage() {
           />
         </motion.div>
 
-        <div className="pointer-events-none absolute inset-0 z-10 bg-black/45" />
-        <div className="pointer-events-none absolute inset-0 z-10 bg-gradient-to-t from-black via-black/35 to-black/10" />
+        {/* Overlay: keep cinematic, but stop crushing the bottom */}
+        <div className="pointer-events-none absolute inset-0 z-10 bg-black/40" />
+        <div className="pointer-events-none absolute inset-0 z-10 bg-gradient-to-t from-black/70 via-black/25 to-black/10" />
 
         <div
           className="pointer-events-none absolute inset-0 z-20 opacity-[0.06] mix-blend-overlay"
@@ -246,12 +247,13 @@ export default function HomePage() {
               </button>
             </motion.div>
 
-            {/* CLIENT LOGO ROW (always visible in hero, no box, brighter) */}
+            {/* CLIENT LOGO ROW (brighter, no box, art-directed) */}
             <motion.div
               initial={reduceMotion ? false : { opacity: 0, y: 10 }}
               animate={reduceMotion ? false : { opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.45 }}
-              className="mt-12"
+              className="mt-16"
+              aria-label="Client logos"
             >
               <div
                 className="relative overflow-hidden"
@@ -262,23 +264,29 @@ export default function HomePage() {
                     "linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%)",
                 }}
               >
-                {/* tiny light haze for legibility (not a box) */}
-                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-white/[0.06] via-white/[0.02] to-transparent" />
-
-                <div className="relative flex flex-wrap items-center gap-x-12 gap-y-8 py-2">
+                <div className="flex flex-wrap items-center gap-x-12 gap-y-8 py-2">
                   {logos.map((logo) => (
                     <div key={logo.name} className="group flex h-10 items-center">
-                      <Image
-                        src={logo.src}
-                        alt={logo.name}
-                        width={240}
-                        height={80}
-                        className="h-9 w-auto opacity-95 grayscale drop-shadow-[0_10px_24px_rgba(0,0,0,0.6)] transition duration-300 group-hover:opacity-100 group-hover:grayscale-0"
-                      />
+                      <div
+                        style={{
+                          transform: `scale(${logo.scale})`,
+                          transformOrigin: "left center",
+                        }}
+                      >
+                        <Image
+                          src={logo.src}
+                          alt={logo.name}
+                          width={240}
+                          height={80}
+                          className="h-8 w-auto opacity-90 grayscale mix-blend-screen transition duration-300 group-hover:opacity-100 group-hover:grayscale-0"
+                        />
+                      </div>
                     </div>
                   ))}
                 </div>
               </div>
+
+              <div className="pointer-events-none mt-3 h-px w-full bg-white/10" />
             </motion.div>
           </div>
         </div>
