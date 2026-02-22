@@ -8,7 +8,11 @@ import {
   useTransform,
 } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
-import type { CSSProperties, MouseEvent as ReactMouseEvent, RefObject } from "react";
+import type {
+  CSSProperties,
+  MouseEvent as ReactMouseEvent,
+  RefObject,
+} from "react";
 
 export default function HomePage() {
   const reduceMotion = useReducedMotion();
@@ -35,15 +39,8 @@ export default function HomePage() {
     </svg>
   `);
 
-  // Work Together card glow state
   const [glow, setGlow] = useState({ x: 50, y: 50 });
 
-  /**
-   * Ultra-subtle magnetic hover for hero buttons
-   * - barely-there translation toward cursor
-   * - preserves clickability
-   * - respects prefers-reduced-motion (disabled)
-   */
   type MagnetApi = {
     ref: RefObject<HTMLButtonElement | null>;
     onMove: (e: ReactMouseEvent<HTMLButtonElement>) => void;
@@ -53,7 +50,6 @@ export default function HomePage() {
 
   const useMagnet = (strength = 0.06): MagnetApi => {
     const ref = useRef<HTMLButtonElement | null>(null);
-
     const [pos, setPos] = useState({ x: 0, y: 0 });
     const raf = useRef<number | null>(null);
 
@@ -70,15 +66,13 @@ export default function HomePage() {
 
     const onMove = (e: ReactMouseEvent<HTMLButtonElement>) => {
       if (reduceMotion) return;
-
       const el = ref.current;
       if (!el) return;
 
       const rect = el.getBoundingClientRect();
-      const px = (e.clientX - rect.left) / rect.width; // 0..1
-      const py = (e.clientY - rect.top) / rect.height; // 0..1
+      const px = (e.clientX - rect.left) / rect.width;
+      const py = (e.clientY - rect.top) / rect.height;
 
-      // center to -0.5..0.5 then scale to pixels
       const dx = (px - 0.5) * rect.width * strength;
       const dy = (py - 0.5) * rect.height * strength;
 
@@ -109,9 +103,19 @@ export default function HomePage() {
     "rounded-2xl px-7 py-4 text-sm font-semibold transition will-change-transform";
   const heroBtnLift = reduceMotion ? "" : "hover:-translate-y-[1px]";
 
+  const logos = [
+    "/logos/amazon.svg",
+    "/logos/hulu.svg",
+    "/logos/verizon.svg",
+    "/logos/ford.svg",
+    "/logos/sony.svg",
+    "/logos/puma.svg",
+    "/logos/columbia-sportswear.svg",
+    "/logos/chime.svg",
+  ];
+
   return (
     <main className="bg-black text-white">
-      {/* HERO */}
       <section className="relative min-h-[92vh] w-full overflow-hidden isolate">
         <motion.div
           className="pointer-events-none absolute inset-0 z-0"
@@ -121,86 +125,33 @@ export default function HomePage() {
           style={
             reduceMotion
               ? undefined
-              : {
-                  y: heroY,
-                  scale: heroScale,
-                }
+              : { y: heroY, scale: heroScale }
           }
         >
-          <Image
-            src="/hero-mobile.jpg"
-            alt="Justin Towery on set"
-            fill
-            priority
-            className="object-cover object-top md:hidden"
-          />
           <Image
             src="/hero.jpg"
             alt="Justin Towery on set"
             fill
             priority
-            className="hidden object-cover object-top md:block"
+            className="object-cover object-top"
           />
         </motion.div>
 
         <div className="pointer-events-none absolute inset-0 z-10 bg-black/45" />
-        <div className="pointer-events-none absolute inset-0 z-10 bg-gradient-to-t from-black via-black/35 to-black/10" />
-
-        <div
-          className="pointer-events-none absolute inset-0 z-20 opacity-[0.06] mix-blend-overlay"
-          style={{
-            backgroundImage: `url("data:image/svg+xml,${grainSvg}")`,
-            backgroundRepeat: "repeat",
-          }}
-        />
 
         <div className="relative z-30 mx-auto flex min-h-[92vh] max-w-6xl items-end px-6 pb-16 pt-24">
           <div className="max-w-2xl">
-            <motion.p
-              initial={reduceMotion ? false : { opacity: 0, y: 10 }}
-              animate={reduceMotion ? false : { opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="text-xs uppercase tracking-[0.35em] text-zinc-200/85"
-            >
-              Los Angeles, CA ⇄ Portland, OR • Producing Worldwide
-            </motion.p>
-
-            <motion.h1
-              initial={reduceMotion ? false : { opacity: 0, y: 14 }}
-              animate={reduceMotion ? false : { opacity: 1, y: 0 }}
-              transition={{ duration: 0.75, delay: 0.05 }}
-              className="mt-5 text-5xl font-bold tracking-tight leading-[0.9] text-white sm:text-6xl"
-            >
+            <h1 className="mt-5 text-5xl font-bold tracking-tight leading-[0.9] text-white sm:text-6xl">
               Calm is
               <br />
               contagious.
-            </motion.h1>
+            </h1>
 
-            <motion.p
-              initial={reduceMotion ? false : { opacity: 0, y: 10 }}
-              animate={reduceMotion ? false : { opacity: 1, y: 0 }}
-              transition={{ duration: 0.65, delay: 0.12 }}
-              className="mt-6 text-2xl text-zinc-200/90"
-            >
+            <p className="mt-6 text-2xl text-zinc-200/90">
               Complex productions. Calm execution.
-            </motion.p>
+            </p>
 
-            <motion.p
-              initial={reduceMotion ? false : { opacity: 0, y: 10 }}
-              animate={reduceMotion ? false : { opacity: 1, y: 0 }}
-              transition={{ duration: 0.65, delay: 0.18 }}
-              className="mt-8 text-base leading-relaxed text-zinc-200/80"
-            >
-              I produce commercials — from high-profile celebrity and athlete–driven
-              broadcast campaigns to emerging brands ready to level up.
-            </motion.p>
-
-            <motion.div
-              initial={reduceMotion ? false : { opacity: 0, y: 12 }}
-              animate={reduceMotion ? false : { opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.25 }}
-              className="mt-10 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4"
-            >
+            <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
               <button
                 ref={magnetPrimary.ref}
                 onMouseMove={magnetPrimary.onMove}
@@ -208,7 +159,6 @@ export default function HomePage() {
                 style={magnetPrimary.style}
                 onClick={() => go("/work")}
                 className={`${heroBtnBase} ${heroBtnLift} bg-white text-black`}
-                aria-label="View work"
               >
                 View work
               </button>
@@ -219,8 +169,7 @@ export default function HomePage() {
                 onMouseLeave={magnetSecondary.onLeave}
                 style={magnetSecondary.style}
                 onClick={() => go("/credits")}
-                className={`${heroBtnBase} ${heroBtnLift} border border-white/25 text-white/90 hover:border-white/45 hover:text-white`}
-                aria-label="Credits"
+                className={`${heroBtnBase} ${heroBtnLift} border border-white/25 text-white`}
               >
                 Credits
               </button>
@@ -231,68 +180,31 @@ export default function HomePage() {
                 onMouseLeave={magnetTertiary.onLeave}
                 style={magnetTertiary.style}
                 onClick={() => go("/contact")}
-                className={`${heroBtnBase} ${heroBtnLift} border border-white/25 text-white/90 hover:border-white/45 hover:text-white`}
-                aria-label="Contact"
+                className={`${heroBtnBase} ${heroBtnLift} border border-white/25 text-white`}
               >
                 Contact
               </button>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* BELOW THE FOLD */}
-      <section className="mx-auto max-w-6xl px-6 py-20">
-        <div className="mb-10 h-px w-full bg-white/10" />
-
-        <div className="grid gap-10 md:grid-cols-3">
-          <div className="md:col-span-2 rounded-2xl border border-white/[0.08] bg-white/[0.03] p-6 backdrop-blur-sm">
-            <h2 className="text-lg font-semibold text-white">About</h2>
-            <div className="mt-4 space-y-4 text-sm leading-relaxed text-zinc-300">
-              <p>
-                I’ve spent two decades producing commercial work at scale — leading
-                teams, managing complexity, and protecting creative at the highest
-                level.
-              </p>
-              <p>
-                I’ve worked in high-pressure environments long enough to know that
-                preparation wins — and calm leadership sets the tone for everyone
-                else.
-              </p>
-              <p className="text-zinc-200/85">Built in Los Angeles. Working nationally.</p>
-              <p className="text-zinc-200/85">
-                Calm isn’t a personality trait. It’s a strategy.
-              </p>
             </div>
-          </div>
 
-          {/* GLOW CARD */}
-          <div
-            onMouseMove={(e) => {
-              const rect = e.currentTarget.getBoundingClientRect();
-              const x = ((e.clientX - rect.left) / rect.width) * 100;
-              const y = ((e.clientY - rect.top) / rect.height) * 100;
-              setGlow({ x, y });
-            }}
-            className="relative overflow-hidden rounded-2xl border border-white/[0.08] bg-white/[0.03] p-6 backdrop-blur-sm"
-          >
-            {/* Cursor Glow */}
-            <div
-              className="pointer-events-none absolute inset-0 opacity-0 transition duration-300 hover:opacity-100"
-              style={{
-                background: `radial-gradient(circle at ${glow.x}% ${glow.y}%, rgba(255,255,255,0.12), transparent 60%)`,
-              }}
-            />
+            {/* CLIENT LOGO ROW */}
+            <div className="mt-14">
+              <p className="text-[11px] uppercase tracking-[0.32em] text-zinc-400">
+                Selected clients
+              </p>
 
-            <h2 className="text-lg font-semibold text-white">Work together</h2>
-
-            <div className="mt-10">
-              <a
-                href="/contact"
-                className="block w-full rounded-xl border border-white/15 bg-white/[0.04] px-5 py-3 text-center text-sm font-semibold text-white transition-all duration-200 hover:bg-white/[0.08] hover:border-white/30 hover:-translate-y-[1px]"
-              >
-                Contact
-              </a>
+              <div className="mt-6 grid grid-cols-2 gap-x-10 gap-y-8 sm:grid-cols-4">
+                {logos.map((src, index) => (
+                  <div key={index} className="flex items-center">
+                    <Image
+                      src={src}
+                      alt="Client logo"
+                      width={140}
+                      height={40}
+                      className="h-6 w-auto opacity-70 grayscale transition duration-300 hover:opacity-100 hover:grayscale-0"
+                    />
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
