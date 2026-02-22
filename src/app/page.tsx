@@ -120,8 +120,8 @@ export default function HomePage() {
     { name: "Chime", src: "/logos/chime.svg" },
   ];
 
-  // Long filmstrip to avoid obvious reset
-  const filmstrip = Array.from({ length: 5 }, () => logos).flat();
+  // Long filmstrip for desktop (no obvious reset)
+  const filmstrip = Array.from({ length: 6 }, () => logos).flat();
 
   return (
     <main className="bg-black text-white">
@@ -132,6 +132,22 @@ export default function HomePage() {
           }
           100% {
             transform: translate3d(-50%, 0, 0);
+          }
+        }
+        @keyframes jtSpecularSweep {
+          0% {
+            transform: translate3d(-30%, 0, 0);
+            opacity: 0;
+          }
+          15% {
+            opacity: 0.55;
+          }
+          50% {
+            opacity: 0.25;
+          }
+          100% {
+            transform: translate3d(130%, 0, 0);
+            opacity: 0;
           }
         }
       `}</style>
@@ -264,12 +280,12 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* FILMSTRIP LOGO MARQUEE (desktop) */}
+        {/* DESKTOP FILMSTRIP (NO LABEL, NO BOX) */}
         <motion.div
           initial={reduceMotion ? false : { opacity: 0 }}
           animate={reduceMotion ? false : { opacity: 1 }}
           transition={{ duration: 0.9, delay: 0.55 }}
-          className="absolute inset-x-0 bottom-14 z-30 hidden md:block"
+          className="absolute inset-x-0 bottom-28 z-30 hidden lg:block"
           aria-label="Client logos"
         >
           <div
@@ -282,10 +298,26 @@ export default function HomePage() {
             }}
           >
             <div className="relative overflow-hidden">
-              {/* subtle lift behind strip (NOT a box) */}
+              {/* Local contrast lift (not a box): a soft band that blends into the image */}
               <div className="pointer-events-none absolute inset-0">
-                <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-black/10 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-black/15 to-transparent" />
               </div>
+
+              {/* Specular sweep (optional, disabled for reduced motion) */}
+              {!reduceMotion && (
+                <div className="pointer-events-none absolute inset-y-0 left-0 w-1/3">
+                  <div
+                    className="absolute inset-y-0 w-full"
+                    style={{
+                      background:
+                        "linear-gradient(90deg, transparent, rgba(255,255,255,0.22), transparent)",
+                      filter: "blur(1px)",
+                      animation: "jtSpecularSweep 9s ease-in-out infinite",
+                      mixBlendMode: "overlay",
+                    }}
+                  />
+                </div>
+              )}
 
               <div
                 className="relative flex w-[200%] items-center gap-16 py-3"
@@ -293,7 +325,7 @@ export default function HomePage() {
                   reduceMotion
                     ? undefined
                     : {
-                        animation: "jtLogoFilmstrip 56s linear infinite",
+                        animation: "jtLogoFilmstrip 60s linear infinite",
                         willChange: "transform",
                       }
                 }
@@ -309,9 +341,9 @@ export default function HomePage() {
                       <Image
                         src={logo.src}
                         alt={logo.name}
-                        width={240}
+                        width={250}
                         height={80}
-                        className="h-10 w-auto opacity-60 grayscale transition duration-300 group-hover:opacity-100 group-hover:grayscale-0"
+                        className="h-10 w-auto opacity-75 grayscale transition duration-300 group-hover:opacity-100 group-hover:grayscale-0"
                       />
                     </div>
                   ))}
@@ -328,41 +360,44 @@ export default function HomePage() {
                       <Image
                         src={logo.src}
                         alt={logo.name}
-                        width={240}
+                        width={250}
                         height={80}
-                        className="h-10 w-auto opacity-60 grayscale transition duration-300 group-hover:opacity-100 group-hover:grayscale-0"
+                        className="h-10 w-auto opacity-75 grayscale transition duration-300 group-hover:opacity-100 group-hover:grayscale-0"
                       />
                     </div>
                   ))}
                 </div>
               </div>
 
-              {/* whisper line (optional) */}
               <div className="pointer-events-none mt-2 h-px w-full bg-white/10" />
             </div>
           </div>
         </motion.div>
 
-        {/* MOBILE: static wrap row */}
+        {/* MOBILE + TABLET: elevated static row (brighter) */}
         <motion.div
           initial={reduceMotion ? false : { opacity: 0, y: 8 }}
           animate={reduceMotion ? false : { opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.45 }}
-          className="mx-auto max-w-6xl px-6 pb-10 md:hidden"
+          className="mx-auto max-w-6xl px-6 pb-10 lg:hidden"
           aria-label="Client logos"
         >
-          <div className="mt-10 flex flex-wrap items-center gap-x-10 gap-y-6">
-            {logos.map((logo) => (
-              <div key={logo.name} className="group flex h-7 items-center">
-                <Image
-                  src={logo.src}
-                  alt={logo.name}
-                  width={180}
-                  height={40}
-                  className="h-7 w-auto opacity-65 grayscale transition duration-300 group-hover:opacity-100 group-hover:grayscale-0"
-                />
-              </div>
-            ))}
+          {/* Soft blend band behind row (no box) */}
+          <div className="relative mt-10">
+            <div className="pointer-events-none absolute -inset-x-6 -inset-y-6 bg-gradient-to-t from-black/40 via-black/10 to-transparent" />
+            <div className="relative flex flex-wrap items-center gap-x-12 gap-y-7">
+              {logos.map((logo) => (
+                <div key={logo.name} className="group flex h-9 items-center">
+                  <Image
+                    src={logo.src}
+                    alt={logo.name}
+                    width={200}
+                    height={48}
+                    className="h-8 w-auto opacity-80 grayscale transition duration-300 group-hover:opacity-100 group-hover:grayscale-0"
+                  />
+                </div>
+              ))}
+            </div>
           </div>
         </motion.div>
       </section>
