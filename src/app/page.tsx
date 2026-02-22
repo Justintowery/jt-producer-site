@@ -39,12 +39,8 @@ export default function HomePage() {
     </svg>
   `);
 
-  // Work Together card glow state
   const [glow, setGlow] = useState({ x: 50, y: 50 });
 
-  /**
-   * Ultra-subtle magnetic hover for hero buttons
-   */
   type MagnetApi = {
     ref: RefObject<HTMLButtonElement | null>;
     onMove: (e: ReactMouseEvent<HTMLButtonElement>) => void;
@@ -54,7 +50,6 @@ export default function HomePage() {
 
   const useMagnet = (strength = 0.06): MagnetApi => {
     const ref = useRef<HTMLButtonElement | null>(null);
-
     const [pos, setPos] = useState({ x: 0, y: 0 });
     const raf = useRef<number | null>(null);
 
@@ -71,7 +66,6 @@ export default function HomePage() {
 
     const onMove = (e: ReactMouseEvent<HTMLButtonElement>) => {
       if (reduceMotion) return;
-
       const el = ref.current;
       if (!el) return;
 
@@ -95,7 +89,6 @@ export default function HomePage() {
       : {
           transform: `translate3d(${pos.x}px, ${pos.y}px, 0)`,
           transition: "transform 180ms cubic-bezier(0.2, 0.8, 0.2, 1)",
-          willChange: "transform",
         };
 
     return { ref, onMove, onLeave, style };
@@ -106,19 +99,8 @@ export default function HomePage() {
   const magnetTertiary = useMagnet(0.05);
 
   const heroBtnBase =
-    "rounded-2xl px-7 py-4 text-sm font-semibold transition will-change-transform";
+    "rounded-2xl px-7 py-4 text-sm font-semibold transition";
   const heroBtnLift = reduceMotion ? "" : "hover:-translate-y-[1px]";
-
-  const logos = [
-    { name: "Amazon", src: "/logos/amazon.svg", scale: 0.92 },
-    { name: "Hulu", src: "/logos/hulu.svg", scale: 1.0 },
-    { name: "Verizon", src: "/logos/verizon.svg", scale: 1.0 },
-    { name: "Ford", src: "/logos/ford.svg", scale: 1.05 },
-    { name: "Sony", src: "/logos/sony.svg", scale: 0.9 },
-    { name: "Puma", src: "/logos/puma.svg", scale: 1.0 },
-    { name: "Columbia Sportswear", src: "/logos/columbia-sportswear.svg", scale: 0.95 },
-    { name: "Chime", src: "/logos/chime.svg", scale: 0.95 },
-  ];
 
   return (
     <main className="bg-black text-white">
@@ -132,10 +114,7 @@ export default function HomePage() {
           style={
             reduceMotion
               ? undefined
-              : {
-                  y: heroY,
-                  scale: heroScale,
-                }
+              : { y: heroY, scale: heroScale }
           }
         >
           <Image
@@ -165,7 +144,7 @@ export default function HomePage() {
           }}
         />
 
-        <div className="relative z-30 mx-auto flex min-h-[88vh] max-w-6xl items-end px-6 pb-16 pt-24">
+        <div className="relative z-30 mx-auto flex min-h-[88vh] max-w-6xl items-end px-6 pb-20 pt-24">
           <div className="max-w-2xl">
             <motion.p
               initial={reduceMotion ? false : { opacity: 0, y: 10 }}
@@ -246,31 +225,6 @@ export default function HomePage() {
               </button>
             </motion.div>
           </div>
-        </div>
-      </section>
-
-      {/* LOGO BAND (below hero, subtle, no label) */}
-      <section className="mx-auto max-w-6xl px-6 py-10">
-        <div className="mb-8 h-px w-full bg-white/10" />
-        <div className="flex flex-wrap items-center justify-between gap-x-12 gap-y-8">
-          {logos.map((logo) => (
-            <div key={logo.name} className="group flex h-10 items-center">
-              <div
-                style={{
-                  transform: `scale(${logo.scale})`,
-                  transformOrigin: "left center",
-                }}
-              >
-                <Image
-                  src={logo.src}
-                  alt={logo.name}
-                  width={220}
-                  height={70}
-                  className="h-8 w-auto opacity-70 grayscale transition duration-300 group-hover:opacity-90 group-hover:grayscale-0"
-                />
-              </div>
-            </div>
-          ))}
         </div>
       </section>
 
