@@ -154,7 +154,6 @@ export default function HomePage() {
           />
         </motion.div>
 
-        {/* Overlay: keep cinematic, but stop crushing the bottom */}
         <div className="pointer-events-none absolute inset-0 z-10 bg-black/40" />
         <div className="pointer-events-none absolute inset-0 z-10 bg-gradient-to-t from-black/70 via-black/25 to-black/10" />
 
@@ -246,49 +245,32 @@ export default function HomePage() {
                 Contact
               </button>
             </motion.div>
+          </div>
+        </div>
+      </section>
 
-            {/* CLIENT LOGO ROW (brighter, no box, art-directed) */}
-            <motion.div
-              initial={reduceMotion ? false : { opacity: 0, y: 10 }}
-              animate={reduceMotion ? false : { opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.45 }}
-              className="mt-16"
-              aria-label="Client logos"
-            >
+      {/* LOGO BAND (below hero, subtle, no label) */}
+      <section className="mx-auto max-w-6xl px-6 py-10">
+        <div className="mb-8 h-px w-full bg-white/10" />
+        <div className="flex flex-wrap items-center justify-between gap-x-12 gap-y-8">
+          {logos.map((logo) => (
+            <div key={logo.name} className="group flex h-10 items-center">
               <div
-                className="relative overflow-hidden"
                 style={{
-                  maskImage:
-                    "linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%)",
-                  WebkitMaskImage:
-                    "linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%)",
+                  transform: `scale(${logo.scale})`,
+                  transformOrigin: "left center",
                 }}
               >
-                <div className="flex flex-wrap items-center gap-x-12 gap-y-8 py-2">
-                  {logos.map((logo) => (
-                    <div key={logo.name} className="group flex h-10 items-center">
-                      <div
-                        style={{
-                          transform: `scale(${logo.scale})`,
-                          transformOrigin: "left center",
-                        }}
-                      >
-                        <Image
-                          src={logo.src}
-                          alt={logo.name}
-                          width={240}
-                          height={80}
-                          className="h-8 w-auto opacity-90 grayscale mix-blend-screen transition duration-300 group-hover:opacity-100 group-hover:grayscale-0"
-                        />
-                      </div>
-                    </div>
-                  ))}
-                </div>
+                <Image
+                  src={logo.src}
+                  alt={logo.name}
+                  width={220}
+                  height={70}
+                  className="h-8 w-auto opacity-70 grayscale transition duration-300 group-hover:opacity-90 group-hover:grayscale-0"
+                />
               </div>
-
-              <div className="pointer-events-none mt-3 h-px w-full bg-white/10" />
-            </motion.div>
-          </div>
+            </div>
+          ))}
         </div>
       </section>
 
