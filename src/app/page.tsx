@@ -120,24 +120,10 @@ export default function HomePage() {
     { name: "Chime", src: "/logos/chime.svg" },
   ];
 
-  // Desktop filmstrip (longer so loop is not obvious)
-  const filmstrip = Array.from({ length: 7 }, () => logos).flat();
-
   return (
     <main className="bg-black text-white">
-      <style jsx global>{`
-        @keyframes jtLogoFilmstrip {
-          0% {
-            transform: translate3d(0, 0, 0);
-          }
-          100% {
-            transform: translate3d(-50%, 0, 0);
-          }
-        }
-      `}</style>
-
       {/* HERO */}
-      <section className="relative min-h-[92vh] w-full overflow-hidden isolate">
+      <section className="relative min-h-[88vh] w-full overflow-hidden isolate">
         <motion.div
           className="pointer-events-none absolute inset-0 z-0"
           initial={heroPhotoInitial}
@@ -179,193 +165,123 @@ export default function HomePage() {
           }}
         />
 
-        <div className="relative z-30 mx-auto flex min-h-[92vh] max-w-6xl items-end px-6 pb-24 pt-24">
-          <div className="w-full">
-            <div className="max-w-2xl">
-              <motion.p
-                initial={reduceMotion ? false : { opacity: 0, y: 10 }}
-                animate={reduceMotion ? false : { opacity: 1, y: 0 }}
-                transition={{ duration: 0.6 }}
-                className="text-xs uppercase tracking-[0.35em] text-zinc-200/85"
+        <div className="relative z-30 mx-auto flex min-h-[88vh] max-w-6xl items-end px-6 pb-16 pt-24">
+          <div className="max-w-2xl">
+            <motion.p
+              initial={reduceMotion ? false : { opacity: 0, y: 10 }}
+              animate={reduceMotion ? false : { opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              className="text-xs uppercase tracking-[0.35em] text-zinc-200/85"
+            >
+              Los Angeles, CA ⇄ Portland, OR • Producing Worldwide
+            </motion.p>
+
+            <motion.h1
+              initial={reduceMotion ? false : { opacity: 0, y: 14 }}
+              animate={reduceMotion ? false : { opacity: 1, y: 0 }}
+              transition={{ duration: 0.75, delay: 0.05 }}
+              className="mt-5 text-5xl font-bold tracking-tight leading-[0.9] text-white sm:text-6xl"
+            >
+              Calm is
+              <br />
+              contagious.
+            </motion.h1>
+
+            <motion.p
+              initial={reduceMotion ? false : { opacity: 0, y: 10 }}
+              animate={reduceMotion ? false : { opacity: 1, y: 0 }}
+              transition={{ duration: 0.65, delay: 0.12 }}
+              className="mt-6 text-2xl text-zinc-200/90"
+            >
+              Complex productions. Calm execution.
+            </motion.p>
+
+            <motion.p
+              initial={reduceMotion ? false : { opacity: 0, y: 10 }}
+              animate={reduceMotion ? false : { opacity: 1, y: 0 }}
+              transition={{ duration: 0.65, delay: 0.18 }}
+              className="mt-8 text-base leading-relaxed text-zinc-200/80"
+            >
+              I produce commercials — from high-profile celebrity and athlete–driven
+              broadcast campaigns to emerging brands ready to level up.
+            </motion.p>
+
+            <motion.div
+              initial={reduceMotion ? false : { opacity: 0, y: 12 }}
+              animate={reduceMotion ? false : { opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.25 }}
+              className="mt-10 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4"
+            >
+              <button
+                ref={magnetPrimary.ref}
+                onMouseMove={magnetPrimary.onMove}
+                onMouseLeave={magnetPrimary.onLeave}
+                style={magnetPrimary.style}
+                onClick={() => go("/work")}
+                className={`${heroBtnBase} ${heroBtnLift} bg-white text-black`}
               >
-                Los Angeles, CA ⇄ Portland, OR • Producing Worldwide
-              </motion.p>
+                View work
+              </button>
 
-              <motion.h1
-                initial={reduceMotion ? false : { opacity: 0, y: 14 }}
-                animate={reduceMotion ? false : { opacity: 1, y: 0 }}
-                transition={{ duration: 0.75, delay: 0.05 }}
-                className="mt-5 text-5xl font-bold tracking-tight leading-[0.9] text-white sm:text-6xl"
+              <button
+                ref={magnetSecondary.ref}
+                onMouseMove={magnetSecondary.onMove}
+                onMouseLeave={magnetSecondary.onLeave}
+                style={magnetSecondary.style}
+                onClick={() => go("/credits")}
+                className={`${heroBtnBase} ${heroBtnLift} border border-white/25 text-white/90 hover:border-white/45 hover:text-white`}
               >
-                Calm is
-                <br />
-                contagious.
-              </motion.h1>
+                Credits
+              </button>
 
-              <motion.p
-                initial={reduceMotion ? false : { opacity: 0, y: 10 }}
-                animate={reduceMotion ? false : { opacity: 1, y: 0 }}
-                transition={{ duration: 0.65, delay: 0.12 }}
-                className="mt-6 text-2xl text-zinc-200/90"
+              <button
+                ref={magnetTertiary.ref}
+                onMouseMove={magnetTertiary.onMove}
+                onMouseLeave={magnetTertiary.onLeave}
+                style={magnetTertiary.style}
+                onClick={() => go("/contact")}
+                className={`${heroBtnBase} ${heroBtnLift} border border-white/25 text-white/90 hover:border-white/45 hover:text-white`}
               >
-                Complex productions. Calm execution.
-              </motion.p>
+                Contact
+              </button>
+            </motion.div>
 
-              <motion.p
-                initial={reduceMotion ? false : { opacity: 0, y: 10 }}
-                animate={reduceMotion ? false : { opacity: 1, y: 0 }}
-                transition={{ duration: 0.65, delay: 0.18 }}
-                className="mt-8 text-base leading-relaxed text-zinc-200/80"
+            {/* CLIENT LOGO ROW (always visible in hero, no box, brighter) */}
+            <motion.div
+              initial={reduceMotion ? false : { opacity: 0, y: 10 }}
+              animate={reduceMotion ? false : { opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.45 }}
+              className="mt-12"
+            >
+              <div
+                className="relative overflow-hidden"
+                style={{
+                  maskImage:
+                    "linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%)",
+                  WebkitMaskImage:
+                    "linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%)",
+                }}
               >
-                I produce commercials — from high-profile celebrity and athlete–driven
-                broadcast campaigns to emerging brands ready to level up.
-              </motion.p>
+                {/* tiny light haze for legibility (not a box) */}
+                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-white/[0.06] via-white/[0.02] to-transparent" />
 
-              <motion.div
-                initial={reduceMotion ? false : { opacity: 0, y: 12 }}
-                animate={reduceMotion ? false : { opacity: 1, y: 0 }}
-                transition={{ duration: 0.7, delay: 0.25 }}
-                className="mt-10 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4"
-              >
-                <button
-                  ref={magnetPrimary.ref}
-                  onMouseMove={magnetPrimary.onMove}
-                  onMouseLeave={magnetPrimary.onLeave}
-                  style={magnetPrimary.style}
-                  onClick={() => go("/work")}
-                  className={`${heroBtnBase} ${heroBtnLift} bg-white text-black`}
-                >
-                  View work
-                </button>
-
-                <button
-                  ref={magnetSecondary.ref}
-                  onMouseMove={magnetSecondary.onMove}
-                  onMouseLeave={magnetSecondary.onLeave}
-                  style={magnetSecondary.style}
-                  onClick={() => go("/credits")}
-                  className={`${heroBtnBase} ${heroBtnLift} border border-white/25 text-white/90 hover:border-white/45 hover:text-white`}
-                >
-                  Credits
-                </button>
-
-                <button
-                  ref={magnetTertiary.ref}
-                  onMouseMove={magnetTertiary.onMove}
-                  onMouseLeave={magnetTertiary.onLeave}
-                  style={magnetTertiary.style}
-                  onClick={() => go("/contact")}
-                  className={`${heroBtnBase} ${heroBtnLift} border border-white/25 text-white/90 hover:border-white/45 hover:text-white`}
-                >
-                  Contact
-                </button>
-              </motion.div>
-            </div>
+                <div className="relative flex flex-wrap items-center gap-x-12 gap-y-8 py-2">
+                  {logos.map((logo) => (
+                    <div key={logo.name} className="group flex h-10 items-center">
+                      <Image
+                        src={logo.src}
+                        alt={logo.name}
+                        width={240}
+                        height={80}
+                        className="h-9 w-auto opacity-95 grayscale drop-shadow-[0_10px_24px_rgba(0,0,0,0.6)] transition duration-300 group-hover:opacity-100 group-hover:grayscale-0"
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </motion.div>
           </div>
         </div>
-
-        {/* DESKTOP: FLOATING FILMSTRIP (NO BOX, BRIGHTER, SHADOW LIFT) */}
-        <motion.div
-          initial={reduceMotion ? false : { opacity: 0 }}
-          animate={reduceMotion ? false : { opacity: 1 }}
-          transition={{ duration: 0.9, delay: 0.55 }}
-          className="absolute inset-x-0 bottom-28 z-30 hidden lg:block"
-          aria-label="Client logos"
-        >
-          <div
-            className="mx-auto max-w-6xl px-6"
-            style={{
-              maskImage:
-                "linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%)",
-              WebkitMaskImage:
-                "linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%)",
-            }}
-          >
-            <div className="relative overflow-hidden">
-              {/* tiny *light* haze for contrast (not a box) */}
-              <div className="pointer-events-none absolute inset-0">
-                <div className="absolute inset-0 bg-gradient-to-t from-white/[0.08] via-white/[0.03] to-transparent" />
-              </div>
-
-              <div
-                className="relative flex w-[200%] items-center gap-16 py-3"
-                style={
-                  reduceMotion
-                    ? undefined
-                    : {
-                        animation: "jtLogoFilmstrip 62s linear infinite",
-                        willChange: "transform",
-                      }
-                }
-              >
-                <div className="flex w-1/2 items-center gap-16">
-                  {filmstrip.map((logo, idx) => (
-                    <div
-                      key={`${logo.name}-a-${idx}`}
-                      className="group flex h-12 items-center"
-                      title={logo.name}
-                    >
-                      <Image
-                        src={logo.src}
-                        alt={logo.name}
-                        width={260}
-                        height={90}
-                        className="h-10 w-auto opacity-95 grayscale drop-shadow-[0_12px_28px_rgba(0,0,0,0.55)] transition duration-300 group-hover:opacity-100 group-hover:grayscale-0"
-                      />
-                    </div>
-                  ))}
-                </div>
-
-                <div className="flex w-1/2 items-center gap-16">
-                  {filmstrip.map((logo, idx) => (
-                    <div
-                      key={`${logo.name}-b-${idx}`}
-                      className="group flex h-12 items-center"
-                      title={logo.name}
-                    >
-                      <Image
-                        src={logo.src}
-                        alt={logo.name}
-                        width={260}
-                        height={90}
-                        className="h-10 w-auto opacity-95 grayscale drop-shadow-[0_12px_28px_rgba(0,0,0,0.55)] transition duration-300 group-hover:opacity-100 group-hover:grayscale-0"
-                      />
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div className="pointer-events-none mt-2 h-px w-full bg-white/10" />
-            </div>
-          </div>
-        </motion.div>
-
-        {/* TABLET + MOBILE: BRIGHTER STATIC ROW */}
-        <motion.div
-          initial={reduceMotion ? false : { opacity: 0, y: 8 }}
-          animate={reduceMotion ? false : { opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.45 }}
-          className="mx-auto max-w-6xl px-6 pb-10 lg:hidden"
-          aria-label="Client logos"
-        >
-          <div className="relative mt-10">
-            {/* light haze to increase readability */}
-            <div className="pointer-events-none absolute -inset-x-6 -inset-y-6 bg-gradient-to-t from-white/[0.08] via-white/[0.03] to-transparent" />
-            <div className="relative flex flex-wrap items-center gap-x-12 gap-y-7">
-              {logos.map((logo) => (
-                <div key={logo.name} className="group flex h-9 items-center">
-                  <Image
-                    src={logo.src}
-                    alt={logo.name}
-                    width={210}
-                    height={50}
-                    className="h-8 w-auto opacity-95 grayscale drop-shadow-[0_10px_24px_rgba(0,0,0,0.55)] transition duration-300 group-hover:opacity-100 group-hover:grayscale-0"
-                  />
-                </div>
-              ))}
-            </div>
-          </div>
-        </motion.div>
       </section>
 
       {/* BELOW THE FOLD */}
