@@ -44,9 +44,6 @@ export default function HomePage() {
 
   /**
    * Ultra-subtle magnetic hover for hero buttons
-   * - barely-there translation toward cursor
-   * - preserves clickability
-   * - respects prefers-reduced-motion (disabled)
    */
   type MagnetApi = {
     ref: RefObject<HTMLButtonElement | null>;
@@ -123,12 +120,11 @@ export default function HomePage() {
     { name: "Chime", src: "/logos/chime.svg" },
   ];
 
-  // Duplicate for marquee loop (desktop)
   const marqueeLogos = [...logos, ...logos];
 
   return (
     <main className="bg-black text-white">
-      {/* Marquee keyframes (scoped global) */}
+      {/* Marquee keyframes */}
       <style jsx global>{`
         @keyframes jtLogoMarquee {
           0% {
@@ -184,9 +180,8 @@ export default function HomePage() {
         />
 
         <div className="relative z-30 mx-auto flex min-h-[92vh] max-w-6xl items-end px-6 pb-16 pt-24">
-          {/* Two-column layout on desktop */}
-          <div className="w-full lg:grid lg:grid-cols-[1fr_300px] lg:items-end lg:gap-10">
-            {/* LEFT: hero copy */}
+          <div className="w-full lg:grid lg:grid-cols-[1fr_340px] lg:items-end lg:gap-12">
+            {/* LEFT */}
             <div className="max-w-2xl">
               <motion.p
                 initial={reduceMotion ? false : { opacity: 0, y: 10 }}
@@ -240,7 +235,6 @@ export default function HomePage() {
                   style={magnetPrimary.style}
                   onClick={() => go("/work")}
                   className={`${heroBtnBase} ${heroBtnLift} bg-white text-black`}
-                  aria-label="View work"
                 >
                   View work
                 </button>
@@ -252,7 +246,6 @@ export default function HomePage() {
                   style={magnetSecondary.style}
                   onClick={() => go("/credits")}
                   className={`${heroBtnBase} ${heroBtnLift} border border-white/25 text-white/90 hover:border-white/45 hover:text-white`}
-                  aria-label="Credits"
                 >
                   Credits
                 </button>
@@ -264,13 +257,12 @@ export default function HomePage() {
                   style={magnetTertiary.style}
                   onClick={() => go("/contact")}
                   className={`${heroBtnBase} ${heroBtnLift} border border-white/25 text-white/90 hover:border-white/45 hover:text-white`}
-                  aria-label="Contact"
                 >
                   Contact
                 </button>
               </motion.div>
 
-              {/* Mobile fallback: small logo row under buttons */}
+              {/* Mobile fallback */}
               <motion.div
                 initial={reduceMotion ? false : { opacity: 0, y: 10 }}
                 animate={reduceMotion ? false : { opacity: 1, y: 0 }}
@@ -281,20 +273,15 @@ export default function HomePage() {
                   Selected clients
                 </p>
 
-                <div className="mt-5 flex flex-wrap items-center gap-x-8 gap-y-5">
+                <div className="mt-5 flex flex-wrap items-center gap-x-10 gap-y-6">
                   {logos.map((logo) => (
-                    <div
-                      key={logo.name}
-                      className="group flex h-6 items-center"
-                      title={logo.name}
-                      aria-label={logo.name}
-                    >
+                    <div key={logo.name} className="group flex h-7 items-center">
                       <Image
                         src={logo.src}
                         alt={logo.name}
-                        width={140}
-                        height={28}
-                        className="h-6 w-auto opacity-70 grayscale transition duration-300 group-hover:opacity-100 group-hover:grayscale-0"
+                        width={170}
+                        height={34}
+                        className="h-7 w-auto opacity-70 grayscale transition duration-300 group-hover:opacity-100 group-hover:grayscale-0"
                       />
                     </div>
                   ))}
@@ -302,72 +289,66 @@ export default function HomePage() {
               </motion.div>
             </div>
 
-            {/* RIGHT: translucent scrolling logo column (desktop) */}
+            {/* RIGHT: floating marquee (no box) */}
             <motion.aside
               initial={reduceMotion ? false : { opacity: 0, y: 12 }}
               animate={reduceMotion ? false : { opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.35 }}
               className="hidden lg:block"
             >
-              <div className="rounded-2xl border border-white/10 bg-white/[0.035] p-5 backdrop-blur-md">
-                <div className="flex items-center justify-between">
-                  <p className="text-[11px] uppercase tracking-[0.32em] text-zinc-200/60">
-                    Selected clients
-                  </p>
-                  <div className="h-px flex-1 bg-white/10 mx-4" />
-                  <p className="text-[11px] text-zinc-200/45">Scroll</p>
-                </div>
-
-                {/* Scroll window */}
-                <div
-                  className="mt-5 relative h-[220px] overflow-hidden"
-                  style={{
-                    // subtle fade top/bottom
-                    maskImage:
-                      "linear-gradient(to bottom, transparent 0%, black 14%, black 86%, transparent 100%)",
-                    WebkitMaskImage:
-                      "linear-gradient(to bottom, transparent 0%, black 14%, black 86%, transparent 100%)",
-                  }}
-                >
-                  {/* Marquee track (auto-scroll unless reduced motion) */}
-                  <div
-                    className="absolute inset-0"
-                    style={
-                      reduceMotion
-                        ? undefined
-                        : {
-                            animation: "jtLogoMarquee 18s linear infinite",
-                          }
-                    }
-                  >
-                    <div className="flex flex-col gap-6 py-2">
-                      {marqueeLogos.map((logo, idx) => (
-                        <div
-                          key={`${logo.name}-${idx}`}
-                          className="group flex items-center justify-start"
-                          title={logo.name}
-                          aria-label={logo.name}
-                        >
-                          <Image
-                            src={logo.src}
-                            alt={logo.name}
-                            width={160}
-                            height={36}
-                            className="h-7 w-auto opacity-55 grayscale transition duration-300 group-hover:opacity-90 group-hover:grayscale-0"
-                          />
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Optional manual scroll overlay (subtle): pointer-events on container */}
-                  {/* If you want manual scroll instead of auto, tell me and I'll switch it. */}
-                </div>
-
-                <p className="mt-4 text-xs text-zinc-200/45 leading-relaxed">
-                  Quiet credibility. No noise.
+              {/* Small header (no frame) */}
+              <div className="flex items-center gap-4">
+                <p className="text-[11px] uppercase tracking-[0.32em] text-zinc-200/55">
+                  Selected clients
                 </p>
+                <div className="h-px flex-1 bg-white/10" />
               </div>
+
+              {/* Floating scroll area */}
+              <div
+                className="relative mt-6 h-[300px] overflow-hidden"
+                style={{
+                  maskImage:
+                    "linear-gradient(to bottom, transparent 0%, black 14%, black 86%, transparent 100%)",
+                  WebkitMaskImage:
+                    "linear-gradient(to bottom, transparent 0%, black 14%, black 86%, transparent 100%)",
+                }}
+              >
+                {/* Subtle glass veil behind logos (not a box) */}
+                <div className="pointer-events-none absolute inset-0">
+                  <div className="absolute inset-0 bg-gradient-to-l from-white/[0.06] via-white/[0.02] to-transparent blur-[0.2px]" />
+                </div>
+
+                <div
+                  className="absolute inset-0"
+                  style={
+                    reduceMotion
+                      ? undefined
+                      : { animation: "jtLogoMarquee 22s linear infinite" }
+                  }
+                >
+                  <div className="flex flex-col gap-8 py-2 pr-2">
+                    {marqueeLogos.map((logo, idx) => (
+                      <div
+                        key={`${logo.name}-${idx}`}
+                        className="group flex items-center"
+                        title={logo.name}
+                      >
+                        <Image
+                          src={logo.src}
+                          alt={logo.name}
+                          width={220}
+                          height={60}
+                          className="h-9 w-auto opacity-55 grayscale transition duration-300 group-hover:opacity-95 group-hover:grayscale-0"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Tiny spacer so it breathes */}
+              <div className="h-2" />
             </motion.aside>
           </div>
         </div>
@@ -392,7 +373,9 @@ export default function HomePage() {
                 else.
               </p>
               <p className="text-zinc-200/85">Built in Los Angeles. Working nationally.</p>
-              <p className="text-zinc-200/85">Calm isn’t a personality trait. It’s a strategy.</p>
+              <p className="text-zinc-200/85">
+                Calm isn’t a personality trait. It’s a strategy.
+              </p>
             </div>
           </div>
 
