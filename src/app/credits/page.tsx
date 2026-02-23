@@ -1,192 +1,153 @@
-"use client";
+import type { Metadata } from "next";
+import creditsData from "@/data/credits";
 
-import Link from "next/link";
-import { motion } from "framer-motion";
-import { credits } from "@/data/credits";
+export const metadata: Metadata = {
+  title: "Credits — Justin Towery",
+};
 
-type AnyCredit = Record<string, unknown>;
-
-function pickString(c: AnyCredit, keys: string[]): string | null {
-  for (const k of keys) {
-    const v = c[k];
-    if (typeof v === "string" && v.trim().length > 0) return v.trim();
-  }
-  return null;
-}
+type CreditItem = {
+  client: string;
+  director?: string;
+  company?: string;
+  location?: string;
+};
 
 export default function CreditsPage() {
-  const items = (credits as unknown as AnyCredit[]) ?? [];
+  const credits = (creditsData as unknown as CreditItem[]) ?? [];
 
   return (
-    <main className="min-h-dvh bg-zinc-950 text-white">
-      <section className="mx-auto max-w-6xl px-6 pb-24 pt-28 sm:pt-32">
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, ease: "easeOut" }}
-        >
-          {/* Keep the small label you like */}
-          <p className="text-xs uppercase tracking-[0.35em] text-zinc-400">
+    <main className="relative min-h-screen bg-black text-white">
+      {/* Subtle vignette + grain */}
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(80%_60%_at_50%_10%,rgba(255,255,255,0.06),transparent_55%)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_60%_at_50%_100%,rgba(0,0,0,0.75),transparent_60%)]" />
+      <div className="pointer-events-none absolute inset-0 opacity-[0.06] mix-blend-overlay">
+        <div className="h-full w-full bg-[url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%22220%22%20height%3D%22220%22%20viewBox%3D%220%200%20220%20220%22%3E%3Cfilter%20id%3D%22n%22%3E%3CfeTurbulence%20type%3D%22fractalNoise%22%20baseFrequency%3D%22.9%22%20numOctaves%3D%223%22%20stitchTiles%3D%22stitch%22/%3E%3CfeColorMatrix%20type%3D%22saturate%22%20values%3D%220%22/%3E%3C/filter%3E%3Crect%20width%3D%22220%22%20height%3D%22220%22%20filter%3D%22url(%23n)%22%20opacity%3D%22.35%22/%3E%3C/svg%3E')] bg-repeat" />
+      </div>
+
+      <section className="relative mx-auto max-w-6xl px-6 pb-24 pt-24">
+        {/* Title block */}
+        <header className="mb-10">
+          <div className="text-[11px] uppercase tracking-[0.45em] text-white/55">
             Credits
+          </div>
+
+          <div className="mt-4 flex items-end justify-between gap-6">
+            <h1 className="text-3xl font-semibold tracking-tight text-white sm:text-4xl">
+              Selected Work
+            </h1>
+
+            {/* Quiet cue (film-credit vibe) */}
+            <div className="hidden items-center gap-3 sm:flex">
+              <div className="h-px w-16 bg-white/15" />
+              <div className="font-mono text-[11px] uppercase tracking-[0.28em] text-white/45">
+                Scroll
+              </div>
+            </div>
+          </div>
+
+          <p className="mt-4 max-w-2xl text-sm leading-relaxed text-white/55">
+            A concise selection of commercial credits — built in Los Angeles, working nationally.
           </p>
+        </header>
 
-          {/* Keep an H1 for SEO, but hide it visually */}
-          <h1 className="sr-only">Credits</h1>
+        {/* Rule */}
+        <div className="h-px w-full bg-white/10" />
 
-          <div className="mt-6 flex justify-end">
-            <Link
-              href="/"
-              className="inline-flex items-center justify-center rounded-xl border border-white/15 bg-white/0 px-4 py-2 text-sm text-zinc-200 transition hover:border-white/25 hover:bg-white/5"
-            >
-              Back home
-            </Link>
-          </div>
-        </motion.div>
-
-        {/* Table */}
-        <motion.div
-          className="mt-10"
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.55, ease: "easeOut", delay: 0.05 }}
-        >
+        {/* Desktop “credit lines” */}
+        <div className="hidden md:block">
           {/* Column headers */}
-          <div className="hidden sm:grid sm:grid-cols-12 sm:gap-6 border-b border-white/10 pb-3">
-            <div className="sm:col-span-4">
-              <div className="text-[11px] uppercase tracking-[0.35em] text-zinc-500">
-                Client
-              </div>
+          <div className="grid grid-cols-12 gap-6 py-5">
+            <div className="col-span-4 font-mono text-[11px] uppercase tracking-[0.35em] text-white/45">
+              Client
             </div>
-
-            <div className="sm:col-span-3">
-              <div className="text-[11px] uppercase tracking-[0.35em] text-zinc-500">
-                Director
-              </div>
+            <div className="col-span-3 font-mono text-[11px] uppercase tracking-[0.35em] text-white/45">
+              Director
             </div>
-
-            <div className="sm:col-span-3">
-              <div className="text-[11px] uppercase tracking-[0.35em] text-zinc-500">
-                Company
-              </div>
+            <div className="col-span-3 font-mono text-[11px] uppercase tracking-[0.35em] text-white/45">
+              Company
             </div>
-
-            <div className="sm:col-span-2 text-right">
-              <div className="text-[11px] uppercase tracking-[0.35em] text-zinc-500">
-                Location
-              </div>
+            <div className="col-span-2 text-right font-mono text-[11px] uppercase tracking-[0.35em] text-white/45">
+              Location
             </div>
           </div>
+
+          <div className="h-px w-full bg-white/10" />
 
           {/* Rows */}
-          <div className="divide-y divide-white/10">
-            {items.map((c, idx) => {
-              // IMPORTANT: your data likely stores this as "product"
-              const client =
-                pickString(c, ["client", "brand", "product", "title", "name"]) ??
-                "—";
-
-              const director = pickString(c, ["director", "dir"]) ?? "—";
-
-              const company =
-                pickString(c, [
-                  "company",
-                  "prodco",
-                  "productionCompany",
-                  "production_company",
-                ]) ?? "—";
-
-              const location =
-                pickString(c, ["location", "city", "market", "state"]) ?? "—";
-
-              return (
-                <div
-                  key={`${client}-${director}-${idx}`}
-                  className="group py-6 transition"
-                >
-                  {/* Desktop layout */}
-                  <div className="hidden sm:grid sm:grid-cols-12 sm:gap-6 items-start">
-                    <div className="sm:col-span-4">
-                      <div className="text-lg font-medium tracking-tight text-white/95 group-hover:text-white">
-                        {client}
-                      </div>
+          <ul className="divide-y divide-white/10">
+            {credits.map((c, idx) => (
+              <li
+                key={`${c.client}-${idx}`}
+                className="group"
+              >
+                <div className="grid grid-cols-12 gap-6 py-7 transition-transform duration-200 group-hover:-translate-y-[1px]">
+                  <div className="col-span-4">
+                    <div className="text-base font-medium text-white/90">
+                      {c.client}
                     </div>
-
-                    <div className="sm:col-span-3">
-                      <div className="text-base text-zinc-300 group-hover:text-zinc-200">
-                        {director}
-                      </div>
-                    </div>
-
-                    <div className="sm:col-span-3">
-                      <div className="text-base text-zinc-300 group-hover:text-zinc-200">
-                        {company}
-                      </div>
-                    </div>
-
-                    <div className="sm:col-span-2 text-right">
-                      <div className="text-base text-zinc-400 whitespace-nowrap group-hover:text-zinc-300">
-                        {location}
-                      </div>
+                    {/* subtle “role” line (optional, keeps film vibe) */}
+                    <div className="mt-1 font-mono text-[11px] uppercase tracking-[0.22em] text-white/40">
+                      Producer
                     </div>
                   </div>
 
-                  {/* Mobile layout */}
-                  <div className="sm:hidden">
-                    <div className="text-lg font-medium tracking-tight text-white/95">
-                      {client}
-                    </div>
+                  <div className="col-span-3 self-center text-sm text-white/70">
+                    {c.director ?? "—"}
+                  </div>
 
-                    <div className="mt-3 grid gap-2 text-sm">
-                      <div className="flex justify-between gap-4">
-                        <span className="text-zinc-500 uppercase tracking-[0.32em] text-[11px]">
-                          Director
-                        </span>
-                        <span className="text-zinc-200 text-right">
-                          {director}
-                        </span>
-                      </div>
+                  <div className="col-span-3 self-center text-sm text-white/70">
+                    {c.company ?? "—"}
+                  </div>
 
-                      <div className="flex justify-between gap-4">
-                        <span className="text-zinc-500 uppercase tracking-[0.32em] text-[11px]">
-                          Company
-                        </span>
-                        <span className="text-zinc-200 text-right">
-                          {company}
-                        </span>
-                      </div>
-
-                      <div className="flex justify-between gap-4">
-                        <span className="text-zinc-500 uppercase tracking-[0.32em] text-[11px]">
-                          Location
-                        </span>
-                        <span className="text-zinc-300 text-right">
-                          {location}
-                        </span>
-                      </div>
-                    </div>
+                  <div className="col-span-2 self-center text-right text-sm text-white/60">
+                    {c.location ?? "—"}
                   </div>
                 </div>
-              );
-            })}
-          </div>
+              </li>
+            ))}
+          </ul>
+        </div>
 
-          {/* Bottom actions */}
-          <div className="mt-12 flex flex-col gap-3 sm:flex-row sm:items-center">
-            <Link
-              href="/work"
-              className="inline-flex items-center justify-center rounded-xl border border-white/15 bg-white/0 px-5 py-3 text-sm font-semibold text-white/90 transition hover:border-white/35 hover:bg-white/5 hover:text-white"
-            >
-              View work
-            </Link>
-            <Link
-              href="/contact"
-              className="inline-flex items-center justify-center rounded-xl bg-white px-5 py-3 text-sm font-semibold text-black transition hover:opacity-90"
-            >
-              Contact
-            </Link>
+        {/* Mobile “credit cards” */}
+        <div className="md:hidden">
+          <div className="space-y-4 pt-6">
+            {credits.map((c, idx) => (
+              <div
+                key={`${c.client}-${idx}`}
+                className="rounded-2xl border border-white/[0.10] bg-white/[0.03] p-5"
+              >
+                <div className="text-base font-semibold text-white/90">{c.client}</div>
+                <div className="mt-2 grid gap-2 text-sm text-white/70">
+                  <div className="flex items-baseline justify-between gap-4">
+                    <div className="font-mono text-[11px] uppercase tracking-[0.28em] text-white/45">
+                      Director
+                    </div>
+                    <div className="text-right">{c.director ?? "—"}</div>
+                  </div>
+                  <div className="flex items-baseline justify-between gap-4">
+                    <div className="font-mono text-[11px] uppercase tracking-[0.28em] text-white/45">
+                      Company
+                    </div>
+                    <div className="text-right">{c.company ?? "—"}</div>
+                  </div>
+                  <div className="flex items-baseline justify-between gap-4">
+                    <div className="font-mono text-[11px] uppercase tracking-[0.28em] text-white/45">
+                      Location
+                    </div>
+                    <div className="text-right text-white/60">{c.location ?? "—"}</div>
+                  </div>
+                </div>
+
+                <div className="mt-4 font-mono text-[11px] uppercase tracking-[0.22em] text-white/40">
+                  Producer
+                </div>
+              </div>
+            ))}
           </div>
-        </motion.div>
+        </div>
+
+        {/* Bottom fade (film roll feel) */}
+        <div className="pointer-events-none mt-10 h-10 w-full bg-gradient-to-b from-transparent to-black" />
       </section>
     </main>
   );
