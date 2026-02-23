@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { credits } from "@/data/credits";
 
 export const metadata: Metadata = {
@@ -6,154 +7,75 @@ export const metadata: Metadata = {
 };
 
 type CreditRow = {
-  client: string;
-  director: string;
-  company: string;
-  location: string;
+  product?: string;   // your data uses "product" for the client name
+  director?: string;
+  company?: string;
+  location?: string;
 };
 
-function asString(v: unknown): string {
-  return typeof v === "string" ? v : "";
-}
-
-function pickFirstString(obj: Record<string, unknown>, keys: string[]): string {
-  for (const k of keys) {
-    const v = obj[k];
-    if (typeof v === "string" && v.trim().length) return v.trim();
-  }
-  return "";
-}
-
-/**
- * Normalizes whatever "@/data/credits" exports into a clean CreditRow[].
- * Handles:
- * - array of objects with client/director/company/location
- * - array of strings
- * - objects with alternate keys (productionCompany, production, partner, etc.)
- */
-function normalizeCredits(input: unknown): CreditRow[] {
-  if (!Array.isArray(input)) return [];
-
-  return input.map((item) => {
-    // Case 1: string row
-    if (typeof item === "string") {
-      const s = item.trim();
-      return {
-        client: s,
-        director: "",
-        company: "",
-        location: "",
-      };
-    }
-
-    // Case 2: object row
-    if (item && typeof item === "object") {
-      const obj = item as Record<string, unknown>;
-
-      const client = pickFirstString(obj, ["client", "Client", "brand", "Brand"]);
-      const director = pickFirstString(obj, [
-        "director",
-        "Director",
-        "dir",
-        "Dir",
-      ]);
-
-      // Company / Production partner can be named many ways
-      const company = pickFirstString(obj, [
-        "company",
-        "Company",
-        "productionCompany",
-        "production_company",
-        "production",
-        "Production",
-        "prodCompany",
-        "partner",
-        "productionPartner",
-      ]);
-
-      const location = pickFirstString(obj, [
-        "location",
-        "Location",
-        "city",
-        "City",
-      ]);
-
-      return {
-        client,
-        director,
-        company,
-        location,
-      };
-    }
-
-    // Fallback
-    return {
-      client: "",
-      director: "",
-      company: "",
-      location: "",
-    };
-  });
-}
-
 export default function CreditsPage() {
-  const rows: CreditRow[] = normalizeCredits(credits);
+  const rows = (Array.isArray(credits) ? credits : []) as CreditRow[];
 
   return (
     <main className="min-h-screen bg-black text-white">
-      <section className="w-full px-8 sm:px-12 pb-24 pt-32">
-        {/* Page Label */}
-        <p className="text-xs uppercase tracking-[0.45em] text-white/60">
-          Credits
-        </p>
+      <section className="w-full px-6 sm:px-10 lg:px-12 pb-24 pt-28 sm:pt-32">
+        {/* Top row: label + back button */}
+        <div className="flex items-center justify-between">
+          <p className="text-xs uppercase tracking-[0.45em] text-white/60">
+            Credits
+          </p>
+
+          <Link
+            href="/"
+            className="rounded-full border border-white/20 bg-white/0 px-4 py-2 text-xs uppercase tracking-[0.35em] text-white/70 transition hover:border-white/35 hover:text-white"
+          >
+            Back home
+          </Link>
+        </div>
 
         {/* Divider */}
-        <div className="mt-10 h-px w-full bg-white/15" />
+        <div className="mt-12 h-px w-full bg-white/15" />
 
         {/* Table */}
-        <div className="mt-10">
+        <div className="mt-12">
           {/* Column headers */}
-          <div className="grid grid-cols-12 gap-6 pb-5 text-[11px] uppercase tracking-[0.38em] text-white/50">
-            <div className="col-span-4 pl-1">Client</div>
+          <div className="grid grid-cols-12 gap-6 sm:gap-8 pb-6 text-[11px] uppercase tracking-[0.38em] text-white/55">
+            <div className="col-span-4 pl-2">Client</div>
             <div className="col-span-3">Director</div>
             <div className="col-span-3">Company</div>
-            <div className="col-span-2 text-right pr-1">Location</div>
+            <div className="col-span-2 text-right pr-2">Location</div>
           </div>
 
           <div className="h-px w-full bg-white/15" />
 
           {/* Rows */}
           <div>
-            {rows.map((r, i) => {
-              const keyBase =
-                (r.client && r.client.trim()) || `credit-row-${i}`;
-
-              return (
-                <div key={`${keyBase}-${i}`}>
-                  <div className="grid grid-cols-12 gap-6 py-9">
-                    <div className="col-span-4 pl-1 text-[18px] sm:text-xl font-medium tracking-wide text-white">
-                      {asString(r.client).trim() || "—"}
-                    </div>
-
-                    <div className="col-span-3 self-center text-base text-white/80">
-                      {asString(r.director).trim() || "—"}
-                    </div>
-
-                    <div className="col-span-3 self-center text-base text-white/80">
-                      {asString(r.company).trim() || "—"}
-                    </div>
-
-                    <div className="col-span-2 self-center text-right pr-1 text-base text-white/70">
-                      {asString(r.location).trim() || "—"}
-                    </div>
+            {rows.map((r, i) => (
+              <div key={`${r.product ?? "credit"}-${i}`}>
+                <div className="grid grid-cols-12 gap-6 sm:gap-8 py-8 sm:py-10">
+                  {/* CLIENT (your data is "product") */}
+                  <div className="col-span-4 pl-2 text-lg sm:text-xl font-medium tracking-wide text-white">
+                    {r.product ?? "—"}
                   </div>
 
-                  {i !== rows.length - 1 && (
-                    <div className="h-px w-full bg-white/10" />
-                  )}
+                  <div className="col-span-3 self-center text-sm sm:text-base text-white/80">
+                    {r.director ?? "—"}
+                  </div>
+
+                  <div className="col-span-3 self-center text-sm sm:text-base text-white/80">
+                    {r.company && r.company.trim().length ? r.company : "—"}
+                  </div>
+
+                  <div className="col-span-2 self-center text-right pr-2 text-sm sm:text-base text-white/70">
+                    {r.location ?? "—"}
+                  </div>
                 </div>
-              );
-            })}
+
+                {i !== rows.length - 1 && (
+                  <div className="h-px w-full bg-white/10" />
+                )}
+              </div>
+            ))}
           </div>
         </div>
       </section>
