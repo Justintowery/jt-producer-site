@@ -1,18 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import {
-  motion,
-  useReducedMotion,
-  useScroll,
-  useTransform,
-} from "framer-motion";
+import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
-import type {
-  CSSProperties,
-  MouseEvent as ReactMouseEvent,
-  RefObject,
-} from "react";
+import type { CSSProperties, MouseEvent as ReactMouseEvent, RefObject } from "react";
 
 export default function HomePage() {
   const reduceMotion = useReducedMotion();
@@ -98,8 +89,7 @@ export default function HomePage() {
   const magnetSecondary = useMagnet(0.05);
   const magnetTertiary = useMagnet(0.05);
 
-  const heroBtnBase =
-    "rounded-2xl px-7 py-4 text-sm font-semibold transition";
+  const heroBtnBase = "rounded-2xl px-7 py-4 text-sm font-semibold transition";
   const heroBtnLift = reduceMotion ? "" : "hover:-translate-y-[1px]";
 
   return (
@@ -111,11 +101,7 @@ export default function HomePage() {
           initial={heroPhotoInitial}
           animate={heroPhotoAnimate}
           transition={heroPhotoTransition}
-          style={
-            reduceMotion
-              ? undefined
-              : { y: heroY, scale: heroScale }
-          }
+          style={reduceMotion ? undefined : { y: heroY, scale: heroScale }}
         >
           <Image
             src="/hero-mobile.jpg"
@@ -144,7 +130,8 @@ export default function HomePage() {
           }}
         />
 
-        <div className="relative z-30 mx-auto flex min-h-[88vh] max-w-6xl items-end px-6 pb-20 pt-24">
+        {/* NOTE: tightened bottom padding from pb-20 -> pb-12 */}
+        <div className="relative z-30 mx-auto flex min-h-[88vh] max-w-6xl items-end px-6 pb-12 pt-24">
           <div className="max-w-2xl">
             <motion.p
               initial={reduceMotion ? false : { opacity: 0, y: 10 }}
@@ -181,8 +168,8 @@ export default function HomePage() {
               transition={{ duration: 0.65, delay: 0.18 }}
               className="mt-8 text-base leading-relaxed text-zinc-200/80"
             >
-              I produce commercials — from high-profile celebrity and athlete–driven
-              broadcast campaigns to emerging brands ready to level up.
+              I produce commercials — from high-profile celebrity and athlete–driven broadcast campaigns to
+              emerging brands ready to level up.
             </motion.p>
 
             <motion.div
@@ -229,7 +216,8 @@ export default function HomePage() {
       </section>
 
       {/* BELOW THE FOLD */}
-      <section className="mx-auto max-w-6xl px-6 py-20">
+      {/* NOTE: tightened top padding from py-20 -> pt-12 pb-20 */}
+      <section className="mx-auto max-w-6xl px-6 pt-12 pb-20">
         <div className="mb-10 h-px w-full bg-white/10" />
 
         <div className="grid gap-10 md:grid-cols-3">
@@ -237,14 +225,12 @@ export default function HomePage() {
             <h2 className="text-lg font-semibold text-white">About</h2>
             <div className="mt-4 space-y-4 text-sm leading-relaxed text-zinc-300">
               <p>
-                I’ve spent two decades producing commercial work at scale — leading
-                teams, managing complexity, and protecting creative at the highest
-                level.
+                I’ve spent two decades producing commercial work at scale. Leading teams, managing
+                complexity, and protecting creative at the highest level.
               </p>
               <p>
-                I’ve worked in high-pressure environments long enough to know that
-                preparation wins — and calm leadership sets the tone for everyone
-                else.
+                I’ve worked in high-pressure environments long enough to know that preparation wins and
+                calm leadership sets the tone for everyone else.
               </p>
               <p className="text-zinc-200/85">Built in Los Angeles. Working nationally.</p>
               <p className="text-zinc-200/85">Calm isn’t a personality trait. It’s a strategy.</p>
