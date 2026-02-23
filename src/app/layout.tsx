@@ -2,6 +2,7 @@
 
 import "./globals.css";
 import { ReactNode, useEffect, useMemo, useState } from "react";
+import CursorDot from "../components/CursorDot"; // <-- IMPORTANT: relative import (fixes runtime object import)
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   const [nameOpacity, setNameOpacity] = useState(1);
@@ -40,6 +41,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <body className="relative min-h-screen bg-zinc-950 text-white">
+        {/* Global cursor system (desktop only, never blocks clicks) */}
+        <CursorDot />
+
         {/* Global finish: vignette + grain (quiet luxury) */}
         <div className="pointer-events-none fixed inset-0 z-0">
           {/* vignette */}
@@ -59,6 +63,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           type="button"
           onClick={goHome}
           aria-label="Back home"
+          data-cursor="hover"
           style={{ opacity: nameOpacity }}
           className="
             group
