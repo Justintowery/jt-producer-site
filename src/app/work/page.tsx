@@ -3,8 +3,6 @@
 type WorkVideo = {
   title: string;
   vimeoId: string;
-  // Optional extra params Vimeo provides (badge, autopause, etc.)
-  // We’ll also add a few "clean embed" params.
   extraParams?: string;
 };
 
@@ -18,9 +16,14 @@ export default function WorkPage() {
     {
       title: "Popeyes — Wings (Better Person) :30",
       vimeoId: "1168278891",
-      // Using params from the embed code you pasted, plus a couple cleanup params.
       extraParams:
         "badge=0&autopause=0&player_id=0&app_id=58479&title=0&byline=0&portrait=0&dnt=1",
+    },
+    {
+      // You can rename this title anytime later — it won’t break the embed.
+      title: "New Video",
+      vimeoId: "1168282526",
+      extraParams: "title=0&byline=0&portrait=0&dnt=1",
     },
   ];
 
@@ -82,54 +85,50 @@ export default function WorkPage() {
         </section>
 
         {/* More work */}
-        {rest.length > 0 && (
-          <section className="mt-14">
-            <div className="mb-5 flex items-center justify-between">
-              <p className="text-xs tracking-[0.4em] text-white/55">
-                MORE WORK
-              </p>
-              <div className="h-px flex-1 bg-white/10 ml-5" />
-            </div>
+        <section className="mt-14">
+          <div className="mb-5 flex items-center justify-between">
+            <p className="text-xs tracking-[0.4em] text-white/55">MORE WORK</p>
+            <div className="ml-5 h-px flex-1 bg-white/10" />
+          </div>
 
-            <div className="grid grid-cols-1 gap-10">
-              {rest.map((v) => (
-                <div key={v.vimeoId}>
-                  <div className="overflow-hidden rounded-2xl border border-white/10 bg-white/5 shadow-[0_24px_90px_rgba(0,0,0,0.55)]">
-                    <div className="aspect-video w-full">
-                      <iframe
-                        src={vimeoSrc(v)}
-                        className="h-full w-full"
-                        allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
-                        allowFullScreen
-                        title={v.title}
-                        referrerPolicy="strict-origin-when-cross-origin"
-                        loading="lazy"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="mt-4 flex items-center justify-between gap-4">
-                    <div>
-                      <p className="text-sm text-white/85">{v.title}</p>
-                      <p className="mt-1 text-xs tracking-[0.25em] text-white/50">
-                        VIMEO
-                      </p>
-                    </div>
-
-                    <a
-                      href={`https://vimeo.com/${v.vimeoId}`}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="rounded-full border border-white/15 bg-white/5 px-4 py-2 text-xs tracking-[0.3em] text-white/80 transition hover:border-white/25 hover:bg-white/10"
-                    >
-                      OPEN
-                    </a>
+          <div className="grid grid-cols-1 gap-10">
+            {rest.map((v) => (
+              <div key={v.vimeoId}>
+                <div className="overflow-hidden rounded-2xl border border-white/10 bg-white/5 shadow-[0_24px_90px_rgba(0,0,0,0.55)]">
+                  <div className="aspect-video w-full">
+                    <iframe
+                      src={vimeoSrc(v)}
+                      className="h-full w-full"
+                      allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+                      allowFullScreen
+                      title={v.title}
+                      referrerPolicy="strict-origin-when-cross-origin"
+                      loading="lazy"
+                    />
                   </div>
                 </div>
-              ))}
-            </div>
-          </section>
-        )}
+
+                <div className="mt-4 flex items-center justify-between gap-4">
+                  <div>
+                    <p className="text-sm text-white/85">{v.title}</p>
+                    <p className="mt-1 text-xs tracking-[0.25em] text-white/50">
+                      VIMEO
+                    </p>
+                  </div>
+
+                  <a
+                    href={`https://vimeo.com/${v.vimeoId}`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="rounded-full border border-white/15 bg-white/5 px-4 py-2 text-xs tracking-[0.3em] text-white/80 transition hover:border-white/25 hover:bg-white/10"
+                  >
+                    OPEN
+                  </a>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
       </div>
     </main>
   );
