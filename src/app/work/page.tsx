@@ -78,10 +78,18 @@ export default function WorkPage() {
 
         {/* Grid */}
         <section className="mt-14">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-14">
             {rest.map((v) => (
-              <div key={v.vimeoId}>
-                <div className="overflow-hidden rounded-2xl border border-white/10 bg-black shadow-[0_24px_90px_rgba(0,0,0,0.55)]">
+              <div key={v.vimeoId} className="flex flex-col items-center">
+
+                {/* If vertical, constrain width */}
+                <div
+                  className={`${
+                    v.aspect === "vertical"
+                      ? "w-full max-w-[420px]"
+                      : "w-full"
+                  } overflow-hidden rounded-2xl border border-white/10 bg-black shadow-[0_24px_90px_rgba(0,0,0,0.55)]`}
+                >
                   <div className={`${aspectClass(v.aspect)} w-full`}>
                     <iframe
                       src={vimeoSrc(v.vimeoId)}
@@ -93,7 +101,11 @@ export default function WorkPage() {
                     />
                   </div>
                 </div>
-                <p className="mt-4 text-sm text-white/85">{v.title}</p>
+
+                <p className="mt-4 text-sm text-white/85 text-center">
+                  {v.title}
+                </p>
+
               </div>
             ))}
           </div>
