@@ -40,7 +40,6 @@ function VideoCard({ v }: { v: WorkVideo }) {
 }
 
 export default function WorkPage() {
-  // Featured + horizontals
   const featured: WorkVideo = {
     title: "Directors of Toughness — UK Interview",
     vimeoId: "1168279393",
@@ -65,7 +64,6 @@ export default function WorkPage() {
     },
   ];
 
-  // Vertical pair (forced to sit together)
   const verticalPair: WorkVideo[] = [
     {
       title: "Jersey Mike’s — Eli 1",
@@ -82,11 +80,11 @@ export default function WorkPage() {
   return (
     <main className="min-h-screen bg-black text-white">
       <div className="mx-auto w-full max-w-6xl px-6 pb-24 pt-28">
+
         <header className="mb-10">
-          <p className="text-xs tracking-[0.4em] text-white/60">VIEW WORK</p>
-          <h1 className="mt-3 text-3xl font-medium tracking-tight text-white/90 md:text-4xl">
-            Selected Work
-          </h1>
+          <p className="text-xs tracking-[0.4em] text-white/60">
+            A FEW PROJECTS
+          </p>
         </header>
 
         {/* Featured */}
@@ -105,7 +103,7 @@ export default function WorkPage() {
           <p className="mt-4 text-sm text-white/85">{featured.title}</p>
         </section>
 
-        {/* Horizontals (full width rows) */}
+        {/* Horizontals */}
         <section className="mt-14 space-y-14">
           {horizontals.map((v) => (
             <div key={v.vimeoId}>
@@ -114,7 +112,7 @@ export default function WorkPage() {
           ))}
         </section>
 
-        {/* Vertical pair (immediately after Audi) */}
+        {/* Vertical Pair */}
         <section className="mt-14">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-14">
             {verticalPair.map((v) => (
@@ -122,6 +120,7 @@ export default function WorkPage() {
             ))}
           </div>
         </section>
+
       </div>
     </main>
   );
