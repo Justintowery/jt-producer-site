@@ -13,28 +13,28 @@ export default function WorkPage() {
       title: "Directors of Toughness — UK Interview",
       vimeoId: "1168279393",
       aspect: "horizontal",
-      extraParams: "title=0&byline=0&portrait=0&dnt=1&background=0",
+      extraParams: "title=0&byline=0&portrait=0&dnt=1",
     },
     {
       title: "Popeyes — Wings (Better Person) :30",
       vimeoId: "1168278891",
       aspect: "horizontal",
       extraParams:
-        "badge=0&autopause=0&player_id=0&app_id=58479&title=0&byline=0&portrait=0&dnt=1&background=0",
+        "badge=0&autopause=0&player_id=0&app_id=58479&title=0&byline=0&portrait=0&dnt=1",
     },
     {
       title: "ANCDA — Run CMC (Vertical)",
       vimeoId: "1168282526",
       aspect: "vertical",
       extraParams:
-        "title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479&background=1",
+        "title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479",
     },
     {
       title: "Audi — Watermark",
       vimeoId: "1168283456",
       aspect: "horizontal",
       extraParams:
-        "title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479&background=0",
+        "title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479",
     },
   ];
 
@@ -65,7 +65,7 @@ export default function WorkPage() {
               <iframe
                 src={vimeoSrc(featured)}
                 className="h-full w-full"
-                allow="autoplay; fullscreen; picture-in-picture"
+                allow="fullscreen; picture-in-picture"
                 allowFullScreen
                 title={featured.title}
               />
@@ -84,7 +84,7 @@ export default function WorkPage() {
                     <iframe
                       src={vimeoSrc(v)}
                       className="h-full w-full"
-                      allow="autoplay; fullscreen; picture-in-picture"
+                      allow="fullscreen; picture-in-picture"
                       allowFullScreen
                       title={v.title}
                       loading="lazy"
