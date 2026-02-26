@@ -29,15 +29,20 @@ export default function WorkPage() {
       extraParams:
         "title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479&background=1",
     },
+    {
+      title: "Audi — Watermark",
+      vimeoId: "1168283456",
+      aspect: "horizontal",
+      extraParams:
+        "title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479&background=0",
+    },
   ];
 
   const featured = videos[0];
   const rest = videos.slice(1);
 
-  const vimeoSrc = (v: WorkVideo) => {
-    const params = v.extraParams?.trim();
-    return `https://player.vimeo.com/video/${v.vimeoId}?${params}`;
-  };
+  const vimeoSrc = (v: WorkVideo) =>
+    `https://player.vimeo.com/video/${v.vimeoId}?${v.extraParams}`;
 
   const aspectClass = (aspect: WorkVideo["aspect"]) =>
     aspect === "vertical" ? "aspect-[9/16]" : "aspect-video";
@@ -66,6 +71,7 @@ export default function WorkPage() {
               />
             </div>
           </div>
+          <p className="mt-4 text-sm text-white/85">{featured.title}</p>
         </section>
 
         {/* More Work */}
