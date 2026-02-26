@@ -6,13 +6,48 @@ type WorkVideo = {
   aspect: "horizontal" | "vertical";
 };
 
+const vimeoSrc = (id: string) =>
+  `https://player.vimeo.com/video/${id}?title=0&byline=0&portrait=0&dnt=1`;
+
+function VideoCard({ v }: { v: WorkVideo }) {
+  const isVertical = v.aspect === "vertical";
+  const aspectClass = isVertical ? "aspect-[9/16]" : "aspect-video";
+
+  return (
+    <div className="flex flex-col items-center">
+      <div
+        className={[
+          isVertical ? "w-full max-w-[420px]" : "w-full",
+          "overflow-hidden rounded-2xl border border-white/10 bg-black",
+          "shadow-[0_24px_90px_rgba(0,0,0,0.55)]",
+        ].join(" ")}
+      >
+        <div className={`${aspectClass} w-full`}>
+          <iframe
+            src={vimeoSrc(v.vimeoId)}
+            className="h-full w-full"
+            allow="fullscreen; picture-in-picture"
+            allowFullScreen
+            title={v.title}
+            loading="lazy"
+          />
+        </div>
+      </div>
+
+      <p className="mt-4 text-sm text-white/85 text-center">{v.title}</p>
+    </div>
+  );
+}
+
 export default function WorkPage() {
-  const videos: WorkVideo[] = [
-    {
-      title: "Directors of Toughness — UK Interview",
-      vimeoId: "1168279393",
-      aspect: "horizontal",
-    },
+  // Featured + horizontals
+  const featured: WorkVideo = {
+    title: "Directors of Toughness — UK Interview",
+    vimeoId: "1168279393",
+    aspect: "horizontal",
+  };
+
+  const horizontals: WorkVideo[] = [
     {
       title: "Popeyes — Wings (Better Person) :30",
       vimeoId: "1168278891",
@@ -28,26 +63,21 @@ export default function WorkPage() {
       vimeoId: "1168283456",
       aspect: "horizontal",
     },
-    {
-      title: "ANCDA — Run CMC",
-      vimeoId: "1168282526",
-      aspect: "vertical",
-    },
+  ];
+
+  // Vertical pair (forced to sit together)
+  const verticalPair: WorkVideo[] = [
     {
       title: "Jersey Mike’s — Eli 1",
       vimeoId: "1168321478",
       aspect: "vertical",
     },
+    {
+      title: "ANCDA — Run CMC",
+      vimeoId: "1168282526",
+      aspect: "vertical",
+    },
   ];
-
-  const featured = videos[0];
-  const rest = videos.slice(1);
-
-  const aspectClass = (aspect: WorkVideo["aspect"]) =>
-    aspect === "vertical" ? "aspect-[9/16]" : "aspect-video";
-
-  const vimeoSrc = (id: string) =>
-    `https://player.vimeo.com/video/${id}?title=0&byline=0&portrait=0&dnt=1`;
 
   return (
     <main className="min-h-screen bg-black text-white">
@@ -62,7 +92,7 @@ export default function WorkPage() {
         {/* Featured */}
         <section>
           <div className="overflow-hidden rounded-2xl border border-white/10 bg-black shadow-[0_30px_120px_rgba(0,0,0,0.6)]">
-            <div className={`${aspectClass(featured.aspect)} w-full`}>
+            <div className="aspect-video w-full">
               <iframe
                 src={vimeoSrc(featured.vimeoId)}
                 className="h-full w-full"
@@ -75,47 +105,21 @@ export default function WorkPage() {
           <p className="mt-4 text-sm text-white/85">{featured.title}</p>
         </section>
 
-        {/* Grid */}
+        {/* Horizontals (full width rows) */}
+        <section className="mt-14 space-y-14">
+          {horizontals.map((v) => (
+            <div key={v.vimeoId}>
+              <VideoCard v={v} />
+            </div>
+          ))}
+        </section>
+
+        {/* Vertical pair (immediately after Audi) */}
         <section className="mt-14">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-14">
-            {rest.map((v) => {
-              const isVertical = v.aspect === "vertical";
-              const isHorizontal = v.aspect === "horizontal";
-
-              return (
-                <div
-                  key={v.vimeoId}
-                  className={[
-                    // Horizontals span BOTH columns so you never get dead space
-                    isHorizontal ? "md:col-span-2" : "",
-                    "flex flex-col items-center",
-                  ].join(" ")}
-                >
-                  <div
-                    className={[
-                      isVertical ? "w-full max-w-[420px]" : "w-full",
-                      "overflow-hidden rounded-2xl border border-white/10 bg-black",
-                      "shadow-[0_24px_90px_rgba(0,0,0,0.55)]",
-                    ].join(" ")}
-                  >
-                    <div className={`${aspectClass(v.aspect)} w-full`}>
-                      <iframe
-                        src={vimeoSrc(v.vimeoId)}
-                        className="h-full w-full"
-                        allow="fullscreen; picture-in-picture"
-                        allowFullScreen
-                        title={v.title}
-                        loading="lazy"
-                      />
-                    </div>
-                  </div>
-
-                  <p className="mt-4 text-sm text-white/85 text-center">
-                    {v.title}
-                  </p>
-                </div>
-              );
-            })}
+            {verticalPair.map((v) => (
+              <VideoCard key={v.vimeoId} v={v} />
+            ))}
           </div>
         </section>
       </div>
