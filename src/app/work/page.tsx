@@ -4,7 +4,7 @@ type WorkVideo = {
   title: string;
   vimeoId: string;
   aspect: "horizontal" | "vertical";
-  extraParams?: string;
+  extraParams: string;
 };
 
 export default function WorkPage() {
@@ -20,21 +20,7 @@ export default function WorkPage() {
       vimeoId: "1168278891",
       aspect: "horizontal",
       extraParams:
-        "badge=0&autopause=0&player_id=0&app_id=58479&title=0&byline=0&portrait=0&dnt=1",
-    },
-    {
-      title: "ANCDA — Run CMC (Vertical)",
-      vimeoId: "1168282526",
-      aspect: "vertical",
-      extraParams:
-        "title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479",
-    },
-    {
-      title: "Audi — Watermark",
-      vimeoId: "1168283456",
-      aspect: "horizontal",
-      extraParams:
-        "title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479",
+        "badge=0&autopause=0&player_id=0&app_id=58479&title=0&byline=0&portrait=0",
     },
     {
       title: "Visa — Chime",
@@ -42,6 +28,20 @@ export default function WorkPage() {
       aspect: "horizontal",
       extraParams:
         "badge=0&autopause=0&player_id=0&app_id=58479&title=0&byline=0&portrait=0",
+    },
+    {
+      title: "Audi — Watermark",
+      vimeoId: "1168283456",
+      aspect: "horizontal",
+      extraParams:
+        "badge=0&autopause=0&player_id=0&app_id=58479&title=0&byline=0&portrait=0",
+    },
+    {
+      title: "ANCDA — Run CMC (Vertical)",
+      vimeoId: "1168282526",
+      aspect: "vertical",
+      extraParams:
+        "title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479",
     },
   ];
 
@@ -65,7 +65,7 @@ export default function WorkPage() {
           </h1>
         </header>
 
-        {/* Featured */}
+        {/* Featured Video */}
         <section>
           <div className="overflow-hidden rounded-2xl border border-white/10 bg-black shadow-[0_30px_120px_rgba(0,0,0,0.6)]">
             <div className={`${aspectClass(featured.aspect)} w-full`}>
@@ -81,7 +81,7 @@ export default function WorkPage() {
           <p className="mt-4 text-sm text-white/85">{featured.title}</p>
         </section>
 
-        {/* More Work */}
+        {/* Grid */}
         <section className="mt-14">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
             {rest.map((v) => (
