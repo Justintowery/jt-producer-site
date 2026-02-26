@@ -52,7 +52,6 @@ export default function WorkPage() {
   return (
     <main className="min-h-screen bg-black text-white">
       <div className="mx-auto w-full max-w-6xl px-6 pb-24 pt-28">
-
         <header className="mb-10">
           <p className="text-xs tracking-[0.4em] text-white/60">VIEW WORK</p>
           <h1 className="mt-3 text-3xl font-medium tracking-tight text-white/90 md:text-4xl">
@@ -79,38 +78,46 @@ export default function WorkPage() {
         {/* Grid */}
         <section className="mt-14">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-14">
-            {rest.map((v) => (
-              <div key={v.vimeoId} className="flex flex-col items-center">
+            {rest.map((v) => {
+              const isVertical = v.aspect === "vertical";
+              const isHorizontal = v.aspect === "horizontal";
 
-                {/* If vertical, constrain width */}
+              return (
                 <div
-                  className={`${
-                    v.aspect === "vertical"
-                      ? "w-full max-w-[420px]"
-                      : "w-full"
-                  } overflow-hidden rounded-2xl border border-white/10 bg-black shadow-[0_24px_90px_rgba(0,0,0,0.55)]`}
+                  key={v.vimeoId}
+                  className={[
+                    // Horizontals span BOTH columns so you never get dead space
+                    isHorizontal ? "md:col-span-2" : "",
+                    "flex flex-col items-center",
+                  ].join(" ")}
                 >
-                  <div className={`${aspectClass(v.aspect)} w-full`}>
-                    <iframe
-                      src={vimeoSrc(v.vimeoId)}
-                      className="h-full w-full"
-                      allow="fullscreen; picture-in-picture"
-                      allowFullScreen
-                      title={v.title}
-                      loading="lazy"
-                    />
+                  <div
+                    className={[
+                      isVertical ? "w-full max-w-[420px]" : "w-full",
+                      "overflow-hidden rounded-2xl border border-white/10 bg-black",
+                      "shadow-[0_24px_90px_rgba(0,0,0,0.55)]",
+                    ].join(" ")}
+                  >
+                    <div className={`${aspectClass(v.aspect)} w-full`}>
+                      <iframe
+                        src={vimeoSrc(v.vimeoId)}
+                        className="h-full w-full"
+                        allow="fullscreen; picture-in-picture"
+                        allowFullScreen
+                        title={v.title}
+                        loading="lazy"
+                      />
+                    </div>
                   </div>
+
+                  <p className="mt-4 text-sm text-white/85 text-center">
+                    {v.title}
+                  </p>
                 </div>
-
-                <p className="mt-4 text-sm text-white/85 text-center">
-                  {v.title}
-                </p>
-
-              </div>
-            ))}
+              );
+            })}
           </div>
         </section>
-
       </div>
     </main>
   );
