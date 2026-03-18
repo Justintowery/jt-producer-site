@@ -2,12 +2,25 @@
 
 type WorkVideo = {
   title: string;
+  client: string;
+  director: string;
   vimeoId: string;
   aspect: "horizontal" | "vertical";
 };
 
 const vimeoSrc = (id: string) =>
   `https://player.vimeo.com/video/${id}?title=0&byline=0&portrait=0&dnt=1`;
+
+function VideoMeta({ v }: { v: WorkVideo }) {
+  return (
+    <div className="mt-4 w-full text-left">
+      <p className="text-sm text-white/90">{v.client}</p>
+      <p className="mt-1 text-sm italic text-white/60">
+        Directed by {v.director}
+      </p>
+    </div>
+  );
+}
 
 function VideoCard({ v }: { v: WorkVideo }) {
   const isVertical = v.aspect === "vertical";
@@ -33,30 +46,40 @@ function VideoCard({ v }: { v: WorkVideo }) {
           />
         </div>
       </div>
+
+      <VideoMeta v={v} />
     </div>
   );
 }
 
 export default function WorkPage() {
   const featured: WorkVideo = {
-    title: "New Featured Project",
-    vimeoId: "1174887979", // ✅ YOUR NEW VIDEO
+    title: "Ford Project",
+    client: "Ford",
+    director: "Behemoth",
+    vimeoId: "1174887979",
     aspect: "horizontal",
   };
 
   const horizontals: WorkVideo[] = [
     {
       title: "Popeyes — Wings (Better Person) :30",
+      client: "Popeyes",
+      director: "Brandt Lewis",
       vimeoId: "1168278891",
       aspect: "horizontal",
     },
     {
       title: "Visa — Chime",
+      client: "Visa",
+      director: "Cole Webley",
       vimeoId: "1168311903",
       aspect: "horizontal",
     },
     {
       title: "Audi — Watermark",
+      client: "Audi",
+      director: "Maz Makhani",
       vimeoId: "1168283456",
       aspect: "horizontal",
     },
@@ -65,20 +88,31 @@ export default function WorkPage() {
   const verticalPair: WorkVideo[] = [
     {
       title: "Jersey Mike’s — Eli 1",
+      client: "Jersey Mike’s",
+      director: "Patrick Yonally",
       vimeoId: "1168321478",
       aspect: "vertical",
     },
     {
-      title: "ANCDA — Run CMC",
+      title: "Sony Anaconda",
+      client: "Sony Anaconda",
+      director: "Marcus Perry",
       vimeoId: "1168282526",
       aspect: "vertical",
     },
   ];
 
+  const closingVideo: WorkVideo = {
+    title: "Directors of Toughness — UK Interview",
+    client: "Columbia Sportswear",
+    director: "Josh Ruben + Vincent Peone",
+    vimeoId: "1168279393",
+    aspect: "horizontal",
+  };
+
   return (
     <main className="min-h-screen bg-black text-white">
       <div className="mx-auto w-full max-w-6xl px-6 pb-24 pt-28">
-
         <header className="mb-10">
           <p className="text-xs tracking-[0.4em] text-white/60">
             A FEW PROJECTS
@@ -98,6 +132,8 @@ export default function WorkPage() {
               />
             </div>
           </div>
+
+          <VideoMeta v={featured} />
         </section>
 
         {/* Horizontals */}
@@ -111,13 +147,17 @@ export default function WorkPage() {
 
         {/* Vertical Pair */}
         <section className="mt-14">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-14">
+          <div className="grid grid-cols-1 gap-14 md:grid-cols-2">
             {verticalPair.map((v) => (
               <VideoCard key={v.vimeoId} v={v} />
             ))}
           </div>
         </section>
 
+        {/* Closing video */}
+        <section className="mt-14">
+          <VideoCard v={closingVideo} />
+        </section>
       </div>
     </main>
   );
