@@ -2,163 +2,143 @@
 
 type WorkVideo = {
   title: string;
-  client: string;
-  director: string;
   vimeoId: string;
   aspect: "horizontal" | "vertical";
+  client: string;
+  director: string;
+};
+
+const videos: {
+  featured: WorkVideo;
+  horizontals: WorkVideo[];
+  verticals: WorkVideo[];
+  closing: WorkVideo;
+} = {
+  featured: {
+    title: "Ford",
+    vimeoId: "1174887979",
+    aspect: "horizontal",
+    client: "Ford",
+    director: "Behemoth",
+  },
+
+  horizontals: [
+    {
+      title: "Popeyes",
+      vimeoId: "000000000",
+      aspect: "horizontal",
+      client: "Popeyes",
+      director: "Brandt Lewis",
+    },
+    {
+      title: "Visa",
+      vimeoId: "000000000",
+      aspect: "horizontal",
+      client: "Visa",
+      director: "Cole Webley",
+    },
+    {
+      title: "Audi",
+      vimeoId: "000000000",
+      aspect: "horizontal",
+      client: "Audi",
+      director: "Maz Makhani",
+    },
+  ],
+
+  verticals: [
+    {
+      title: "Jersey Mike’s",
+      vimeoId: "000000000",
+      aspect: "vertical",
+      client: "Jersey Mike’s",
+      director: "Patrick Yonally",
+    },
+    {
+      title: "Sony Anaconda",
+      vimeoId: "000000000",
+      aspect: "vertical",
+      client: "Sony Anaconda",
+      director: "Marcus Perry",
+    },
+  ],
+
+  closing: {
+    title: "Columbia Sportswear",
+    vimeoId: "1168279393",
+    aspect: "horizontal",
+    client: "Columbia Sportswear",
+    director: "Josh Ruben + Vincent Peone",
+  },
 };
 
 const vimeoSrc = (id: string) =>
   `https://player.vimeo.com/video/${id}?title=0&byline=0&portrait=0&dnt=1`;
-
-function VideoMeta({ v }: { v: WorkVideo }) {
-  return (
-    <div className="mt-4 w-full text-left">
-      <p className="text-sm text-white/90">{v.client}</p>
-      <p className="mt-1 text-sm italic text-white/60">
-        Directed by {v.director}
-      </p>
-    </div>
-  );
-}
 
 function VideoCard({ v }: { v: WorkVideo }) {
   const isVertical = v.aspect === "vertical";
   const aspectClass = isVertical ? "aspect-[9/16]" : "aspect-video";
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-start">
+      {/* VIDEO */}
       <div
         className={[
           isVertical ? "w-full max-w-[420px]" : "w-full",
+          aspectClass,
           "overflow-hidden rounded-2xl border border-white/10 bg-black",
-          "shadow-[0_24px_90px_rgba(0,0,0,0.55)]",
+          "shadow-[0_24px_90px_rgba(0,0,0,0.5)]",
         ].join(" ")}
       >
-        <div className={`${aspectClass} w-full`}>
-          <iframe
-            src={vimeoSrc(v.vimeoId)}
-            className="h-full w-full"
-            allow="fullscreen; picture-in-picture"
-            allowFullScreen
-            title={v.title}
-            loading="lazy"
-          />
-        </div>
+        <iframe
+          src={vimeoSrc(v.vimeoId)}
+          className="h-full w-full"
+          allow="autoplay; fullscreen; picture-in-picture"
+          allowFullScreen
+        />
       </div>
 
-      <VideoMeta v={v} />
+      {/* METADATA (TIGHTER) */}
+      <div className="mt-3 space-y-1">
+        <p className="text-sm text-white/90 tracking-wide">
+          {v.client}
+        </p>
+        <p className="text-xs text-white/50 tracking-[0.2em] uppercase">
+          Directed by {v.director}
+        </p>
+      </div>
     </div>
   );
 }
 
 export default function WorkPage() {
-  const featured: WorkVideo = {
-    title: "Ford Project",
-    client: "Ford",
-    director: "Behemoth",
-    vimeoId: "1174887979",
-    aspect: "horizontal",
-  };
-
-  const horizontals: WorkVideo[] = [
-    {
-      title: "Popeyes — Wings (Better Person) :30",
-      client: "Popeyes",
-      director: "Brandt Lewis",
-      vimeoId: "1168278891",
-      aspect: "horizontal",
-    },
-    {
-      title: "Visa — Chime",
-      client: "Visa",
-      director: "Cole Webley",
-      vimeoId: "1168311903",
-      aspect: "horizontal",
-    },
-    {
-      title: "Audi — Watermark",
-      client: "Audi",
-      director: "Maz Makhani",
-      vimeoId: "1168283456",
-      aspect: "horizontal",
-    },
-  ];
-
-  const verticalPair: WorkVideo[] = [
-    {
-      title: "Jersey Mike’s — Eli 1",
-      client: "Jersey Mike’s",
-      director: "Patrick Yonally",
-      vimeoId: "1168321478",
-      aspect: "vertical",
-    },
-    {
-      title: "Sony Anaconda",
-      client: "Sony Anaconda",
-      director: "Marcus Perry",
-      vimeoId: "1168282526",
-      aspect: "vertical",
-    },
-  ];
-
-  const closingVideo: WorkVideo = {
-    title: "Directors of Toughness — UK Interview",
-    client: "Columbia Sportswear",
-    director: "Josh Ruben + Vincent Peone",
-    vimeoId: "1168279393",
-    aspect: "horizontal",
-  };
-
   return (
-    <main className="min-h-screen bg-black text-white">
-      <div className="mx-auto w-full max-w-6xl px-6 pb-24 pt-28">
-        <header className="mb-10">
-          <p className="text-xs tracking-[0.4em] text-white/60">
-            A FEW PROJECTS
-          </p>
-        </header>
+    <main className="bg-black text-white px-6 md:px-10 py-24">
 
-        {/* Featured */}
-        <section>
-          <div className="overflow-hidden rounded-2xl border border-white/10 bg-black shadow-[0_30px_120px_rgba(0,0,0,0.6)]">
-            <div className="aspect-video w-full">
-              <iframe
-                src={vimeoSrc(featured.vimeoId)}
-                className="h-full w-full"
-                allow="fullscreen; picture-in-picture"
-                allowFullScreen
-                title={featured.title}
-              />
-            </div>
-          </div>
+      {/* FEATURED (MORE DOMINANT) */}
+      <section className="max-w-[1200px] mx-auto mb-28">
+        <VideoCard v={videos.featured} />
+      </section>
 
-          <VideoMeta v={featured} />
-        </section>
+      {/* HORIZONTAL STACK */}
+      <section className="max-w-[1000px] mx-auto space-y-24 mb-32">
+        {videos.horizontals.map((v, i) => (
+          <VideoCard key={i} v={v} />
+        ))}
+      </section>
 
-        {/* Horizontals */}
-        <section className="mt-14 space-y-14">
-          {horizontals.map((v) => (
-            <div key={v.vimeoId}>
-              <VideoCard v={v} />
-            </div>
-          ))}
-        </section>
+      {/* VERTICAL GRID */}
+      <section className="max-w-[1000px] mx-auto grid md:grid-cols-2 gap-16 mb-32">
+        {videos.verticals.map((v, i) => (
+          <VideoCard key={i} v={v} />
+        ))}
+      </section>
 
-        {/* Vertical Pair */}
-        <section className="mt-14">
-          <div className="grid grid-cols-1 gap-14 md:grid-cols-2">
-            {verticalPair.map((v) => (
-              <VideoCard key={v.vimeoId} v={v} />
-            ))}
-          </div>
-        </section>
+      {/* CLOSING */}
+      <section className="max-w-[1000px] mx-auto">
+        <VideoCard v={videos.closing} />
+      </section>
 
-        {/* Closing video */}
-        <section className="mt-14">
-          <VideoCard v={closingVideo} />
-        </section>
-      </div>
     </main>
   );
 }
