@@ -39,8 +39,8 @@ function VideoCard({ v }: { v: WorkVideo }) {
 
 export default function WorkPage() {
   const featured: WorkVideo = {
-    title: "Directors of Toughness — UK Interview",
-    vimeoId: "1168279393",
+    title: "New Featured Project",
+    vimeoId: "1174887979", // ✅ YOUR NEW VIDEO
     aspect: "horizontal",
   };
 
